@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar/Navbar";
+import Posts from "../components/Post/Posts";
 import '../styles/Home/Home.css'
 
 const Home = () => {
@@ -17,7 +18,8 @@ const Home = () => {
         <div id="main-wrapper">
             <Navbar setCurrentPopUp={setCurrentPopUp} />
             <div id="main">
-                <button onClick={() => test()}>Test</button>
+                <Posts />
+                {/* <button onClick={() => test()}>Test</button> */}
             </div>
             {currentPopUp}
         </div>

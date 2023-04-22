@@ -10,14 +10,13 @@
 }
 
 .create-post-div#edit {
-    flex-shrink: 1;
-    height: clamp(391px, min(calc(100vw - 50%), 75%), 898px);
     width: clamp(688px, min(calc(100% - 40px), 75%), 1195px);
+    height: clamp(391px, min(calc(100vw - 50%), 75%), 898px);
 }
 
 .create-post-div#select {
-    height: clamp(391px, calc(100vw - 55%), 898px);
-    width: clamp(348px, 55%, 855px);
+    width: clamp(348px, max(61vh, 31vw), 855px);
+    height: clamp(391px, max(63vh, 33vw), 898px);
 }
 
 #popup-backdrop {
@@ -59,7 +58,7 @@
     max-width: 100%;
     max-height: 100%;
     /* aspect-ratio: auto; */
-    aspect-ratio: 1/1;
+    /* aspect-ratio: 1/1; */
     /* aspect-ratio: 4/5; 
     aspect-ratio: 16/9; */
     object-fit: cover;

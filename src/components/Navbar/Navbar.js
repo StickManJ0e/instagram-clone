@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import '../../styles/nav/Navbar.css';
-import Post from "../Post/Post";
+import PostCreateMenu from "../Post/PostCreateMenu";
 
 const Navbar = (props) => {
     const { setCurrentPopUp } = props;
@@ -12,7 +12,7 @@ const Navbar = (props) => {
     };
 
     const onCreateClick = () => {
-        setCurrentPopUp(<Post setCurrentPopUp={setCurrentPopUp} />);
+        setCurrentPopUp(<PostCreateMenu setCurrentPopUp={setCurrentPopUp} />);
     }
 
     return (

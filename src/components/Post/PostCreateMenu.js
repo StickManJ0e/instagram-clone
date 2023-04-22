@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { firestore, auth } from "../../firebase";
+import { firestore } from "../../firebase";
 import { setDoc, doc, serverTimestamp, collection, addDoc, updateDoc } from "firebase/firestore";
 import { useAuthContext } from "../../context/AuthContext";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import '../../styles/post/Post.css'
+import '../../styles/post/PostCreateMenu.css'
 
-const Post = (props) => {
+const PostCreateMenu = (props) => {
     const { setCurrentPopUp } = props;
     const { loggedIn, userData } = useAuthContext();
     let user = userData;
@@ -14,6 +14,7 @@ const Post = (props) => {
     const [selectedFile, setSelectedFile] = useState();
     const [divToggle, setDivToggle] = useState(false);
     const [selectedAspectRatio, setSelectedAspectRatio] = useState("1:1");
+    const [imageStyle, setImageStyle] = useState({ aspectRatio: '1:1' });
 
     const createPostAndReturn = () => {
         let caption = document.querySelector('textarea').value;
@@ -24,8 +25,10 @@ const Post = (props) => {
             });
     }
 
+    //Create doc in Users and Post collection
     async function savePost(caption, pathRef) {
         try {
+            //Create Doc for Posts collection
             const postRef = await addDoc(pathRef, {
                 uid: user.uid,
                 fileUrl: 'LOADING_IMAGE_URL',
@@ -45,6 +48,7 @@ const Post = (props) => {
                 storageUri: fileSnapshop.metadata.fullPath
             });
 
+            //Duplicate doc for user
             let docRef = doc(firestore, 'users', user.uid, 'posts', postRef.id);
             await setDoc(docRef, {
                 uid: user.uid,
@@ -92,6 +96,11 @@ const Post = (props) => {
     };
 
     useEffect(() => {
+        (selectedAspectRatio === 'original') ? setImageStyle({ aspectRatio: 'auto' }) :
+            (selectedAspectRatio === '1:1') ? setImageStyle({ aspectRatio: 1 / 1 }) :
+                (selectedAspectRatio === '4:5') ? setImageStyle({ aspectRatio: 4 / 5 }) :
+                    setImageStyle({ aspectRatio: 16 / 9 });
+
         let element = document.querySelector(`[option-value="${selectedAspectRatio}"]`);
         let elements = document.querySelectorAll('#resize-options>div');
 
@@ -113,18 +122,18 @@ const Post = (props) => {
                 <div id="select" className="create-post-div">
                     <div className="Heading">Create new post</div>
                     <label htmlFor="file"></label>
-                    <input id='file-input' type='file' name="file" hidden />
+                    <input id='file-input' type='file' name="file" accept="image/jpeg, image/png" hidden />
                     <button onClick={() => uploadFileClick()}>Select From Computer</button>
                 </div> :
                 <div id="edit" className="create-post-div">
                     <div className="post-header">
-                        <button>Back</button>
+                        <button onClick={() => setPage(1)}>Back</button>
                         <div>Create new post</div>
                         <button onClick={() => createPostAndReturn()}>Share</button>
                     </div>
                     <div className="post-main">
                         <div className="image-container">
-                            <img id="selected-file" src={previewFile} alt="selected file"></img>
+                            <img id="selected-file" src={previewFile} alt="selected file" style={imageStyle}></img>
                         </div>
                         <div className="editing-container">
                             <label htmlFor="caption"></label>
@@ -144,8 +153,8 @@ const Post = (props) => {
                     </div>
                 </div>
             }
-        </div>
+        </div >
     )
 }
 
-export default Post;
+export default PostCreateMenu;
