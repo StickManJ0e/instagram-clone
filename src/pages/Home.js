@@ -1,9 +1,11 @@
-import React from "react";
-import { auth } from "../firebase";
+import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
+import Navbar from "../components/Navbar/Navbar";
+import '../styles/Home/Home.css'
 
 const Home = () => {
-    const { loggedIn, userData  } = useAuthContext();
+    const { loggedIn, userData } = useAuthContext();
+    const [currentPopUp, setCurrentPopUp] = useState();
     let user = userData;
 
     const test = () => {
@@ -12,8 +14,12 @@ const Home = () => {
     }
 
     return (
-        <div>Home
-            <button onClick={() => test()}>Test</button>
+        <div id="main-wrapper">
+            <Navbar setCurrentPopUp={setCurrentPopUp} />
+            <div id="main">
+                <button onClick={() => test()}>Test</button>
+            </div>
+            {currentPopUp}
         </div>
     )
 }

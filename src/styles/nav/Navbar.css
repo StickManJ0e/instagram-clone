@@ -1,0 +1,25 @@
+#navbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: stretch;
+    height: 100%;
+    width: var(--navbar-medium-width);
+    padding: 4px;
+    border-right: 1px solid grey;
+}
+
+a {
+    width: var(--navbar-me);
+}
+
+#navbar-buttons-div>* {
+    width: 100%;
+}
+
+#navbar-buttons-div>*:hover,
+#more-div>div:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+

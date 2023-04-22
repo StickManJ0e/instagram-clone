@@ -51,3 +51,7 @@
         -> Messages
             - Each conversation
         -> Posts
+
+- Posts
+    -> unique post
+    - PostInfo: User UID, image data, caption, aspect ratio, timestamp
