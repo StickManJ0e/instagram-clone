@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Posts = (props) => {
-    const { currentPosts } = props;
+    const { currentPosts, setCurrentPosts } = props;
 
     return (
         <div className="posts-div">

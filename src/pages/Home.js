@@ -10,10 +10,16 @@ const Home = () => {
     const { loggedIn, userData } = useAuthContext();
     const [currentPopUp, setCurrentPopUp] = useState();
     const [currentPosts, setCurrentPosts] = useState([]);
-    const [pastPosts, setPastPosts] = useState([]);
     const [key, setKey] = useState();
     let user = userData;
     const postRef = collection(firestore, 'posts');
+
+    const filterArrayWithId = (array) => {
+        const filteredData = array.filter((value, index, self) =>
+            self.findIndex(v => v.docId === value.docId) === index
+        );
+        return filteredData;
+    }
 
     let postObject = (docId, docData) => {
         return {
@@ -31,33 +37,7 @@ const Home = () => {
             setKey(doc.data().timestamp);
         });
 
-        setCurrentPosts(newArray);
-
-        //Listen for new posts created
-        onSnapshot(query(postRef), (snapshot) => {
-            setPastPosts(currentPosts);
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === 'removed') {
-                    let index = currentPosts.findIndex((post) => post.docId === change.doc.id);
-                    let newArray = currentPosts;
-                    newArray.splice(index, 1);
-                    setCurrentPosts(newArray);
-                }
-                if (change.type === 'modified') {
-                    let index = currentPosts.findIndex((post) => post.docId === change.doc.id);
-                    if (index === -1) {
-                        let posts = currentPosts;
-                        posts = posts.unshift(postObject(change.doc.id, change.doc.data()));
-                        setCurrentPosts(posts);
-                    }
-                    else {
-                        let posts = currentPosts;
-                        posts[index] = postObject(change.doc.id, change.doc.data());
-                        setCurrentPosts(posts);
-                    }
-                };
-            });
-        });
+        setCurrentPosts(filterArrayWithId(newArray));
     };
 
     async function fetchData() {
@@ -67,21 +47,53 @@ const Home = () => {
         querySnapshot.forEach((doc) => {
             newArray.push(postObject(doc.id, doc.data()));
             setKey(doc.data().timestamp);
-            console.log(doc.id);
         });
 
         setCurrentPosts(newArray)
     };
 
+    const queryListener = () => {
+        //Listen for new posts created
+        onSnapshot(query(postRef), (snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                let index = currentPosts.findIndex((post) => post.docId === change.doc.id);
+
+                //When doc is removed
+                if (change.type === 'removed' && index !== -1) {
+                    console.log(change.type);
+                    let newArray = currentPosts;
+                    newArray.splice(index, 1);
+                    setCurrentPosts(filterArrayWithId(newArray));
+                }
+
+                if (change.type === 'modified' && index === -1) {
+                    //When doc is created 
+                    let posts = currentPosts;
+                    posts = posts.unshift(postObject(change.doc.id, change.doc.data()));
+                    setCurrentPosts(posts);
+                }
+
+                //When doc is modified 
+                if (change.type === 'modified' && index === -1) {
+                    let posts = currentPosts;
+                    posts[index] = postObject(change.doc.id, change.doc.data());
+                    setCurrentPosts(posts);
+                }
+            });
+        });
+    }
+
     useEffect(() => {
-        return () => postFirst();
+        setCurrentPosts([]);
+        postFirst();
+        queryListener();
     }, []);
 
     return (
         <div id="main-wrapper">
             <Navbar setCurrentPopUp={setCurrentPopUp} />
             <div id="main">
-                <Posts currentPosts={currentPosts} pastPosts={pastPosts}/>
+                <Posts currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} />
                 <button onClick={() => fetchData()}>Load More</button>
             </div>
             {currentPopUp}
