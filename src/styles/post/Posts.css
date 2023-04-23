@@ -1,0 +1,9 @@
+.post-image {
+    width: 468px;
+    height: auto;
+    object-fit: cover;
+}
+
+#load-more {
+    display: none;
+}
