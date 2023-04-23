@@ -15,10 +15,12 @@ const Home = () => {
     const postRef = collection(firestore, 'posts');
 
     const filterArrayWithId = (array) => {
-        const filteredData = array.filter((value, index, self) =>
-            self.findIndex(v => v.docId === value.docId) === index
-        );
-        return filteredData;
+        if (array.length > 0) {
+            const filteredData = array.filter((value, index, self) =>
+                self.findIndex(v => v.docId === value.docId) === index
+            );
+            return filteredData;
+        }
     }
 
     let postObject = (docId, docData) => {
@@ -38,9 +40,11 @@ const Home = () => {
         });
 
         setCurrentPosts(filterArrayWithId(newArray));
+        queryListener();
     };
 
     async function fetchData() {
+        queryListener();
         const querySnapshot = await getDocs(query(postRef, orderBy('timestamp', 'desc'), startAfter(key), limit(2)));
         let newArray = currentPosts;
 
@@ -49,7 +53,8 @@ const Home = () => {
             setKey(doc.data().timestamp);
         });
 
-        setCurrentPosts(newArray)
+        setCurrentPosts(newArray);
+        queryListener();
     };
 
     const queryListener = () => {
@@ -57,11 +62,10 @@ const Home = () => {
         onSnapshot(query(postRef), (snapshot) => {
             snapshot.docChanges().forEach((change) => {
                 let index = currentPosts.findIndex((post) => post.docId === change.doc.id);
-
                 //When doc is removed
                 if (change.type === 'removed' && index !== -1) {
-                    console.log(change.type);
                     let newArray = currentPosts;
+                    console.log('removed', newArray);
                     newArray.splice(index, 1);
                     setCurrentPosts(filterArrayWithId(newArray));
                 }
@@ -69,13 +73,15 @@ const Home = () => {
                 if (change.type === 'modified' && index === -1) {
                     //When doc is created 
                     let posts = currentPosts;
+                    console.log('created', posts);
                     posts = posts.unshift(postObject(change.doc.id, change.doc.data()));
-                    setCurrentPosts(posts);
+                    setCurrentPosts(filterArrayWithId(posts));
                 }
 
                 //When doc is modified 
-                if (change.type === 'modified' && index === -1) {
+                if (change.type === 'modified' && index !== -1) {
                     let posts = currentPosts;
+                    console.log('modified', posts);
                     posts[index] = postObject(change.doc.id, change.doc.data());
                     setCurrentPosts(posts);
                 }
@@ -86,7 +92,6 @@ const Home = () => {
     useEffect(() => {
         setCurrentPosts([]);
         postFirst();
-        queryListener();
     }, []);
 
     return (
