@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { firestore } from "../../firebase";
-import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, getCountFromServer } from "firebase/firestore";
+import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, getCountFromServer, doc, getDoc, serverTimestamp } from "firebase/firestore";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
     const { currentPosts, setCurrentPosts } = props;
     const [key, setKey] = useState();
     const [endLoad, setEndLoad] = useState();
+    const [postUsers, setPostUsers] = useState();
     const postRef = collection(firestore, 'posts');
-    let location = useLocation();
     let postObject = (docId, docData) => {
         return {
             docId, docData,
@@ -58,7 +57,6 @@ const Posts = (props) => {
 
         setCurrentPosts(newArray);
         queryListener();
-
     };
 
     const queryListener = () => {
@@ -106,6 +104,39 @@ const Posts = (props) => {
         return adjustedAspectRation;
     }
 
+    const getUserProfiles = () => {
+        let profileArray = [];
+
+        currentPosts.map(async (post) => {
+            const userRef = doc(firestore, 'users', post.docData.uid);
+            const docSnap = await getDoc(query(userRef));
+            let postUser = {
+                displayName: docSnap.data().displayName,
+                email: docSnap.data().email,
+                photoUrl: docSnap.data().photoUrl,
+                timestamp: docSnap.data().timestamp,
+                uid: docSnap.data().uid,
+                username: docSnap.data().username,
+            };
+            profileArray.push(postUser);
+            setPostUsers(profileArray);
+        })
+    }
+
+    //Get Difference between current date and timestamp
+    const getDate = (timestamp) => {
+        let current = new Date().getTime();
+        let alteredTimestamp = new Date((timestamp.seconds * 1000) + (timestamp.nanoseconds / 1000000)).getTime();
+        let timeDif = current - alteredTimestamp;
+        if ((timeDif / (1000 * 60 * 60 * 24)) >= 1) {
+            return (`${(timeDif / (1000 * 60 * 60 * 24)).toFixed(0)} d`)
+        } else if ((timeDif / (1000 * 60 * 60)) >= 1) {
+            return (`${(timeDif / (1000 * 60 * 60)).toFixed(0)} h`)
+        } else {
+            return (`${(timeDif / (1000 * 60)).toFixed(0)} m`)
+        }
+    }
+
     useEffect(() => {
         setCurrentPosts([]);
         postFirst();
@@ -117,13 +148,35 @@ const Posts = (props) => {
         }
     }, []);
 
+    useEffect(() => {
+        getUserProfiles();
+    }, [currentPosts])
+
     return (
         <div>
             <div className="posts-div">
-                {(currentPosts.length > 0) ? currentPosts.map((post) => {
+                {(currentPosts) ? currentPosts.map((post) => {
+                    let postUser = undefined;
+                    if (postUsers) {
+                        let postUserIndex = postUsers.findIndex((user) => user.uid === post.docData.uid);
+                        postUser = postUsers[postUserIndex];
+                    }
+
                     return (
-                        <div key={post.docId} id={post.docId}>
+                        <div className="post-div" key={post.docId} id={post.docId}>
+                            <div className="post-header">
+                                {(postUser !== undefined) ? <img className="post-profile-picture" src={postUser.photoUrl || ''} alt="profile" /> :
+                                    <img className="post-profile-picture" src='' alt="profile-" />}
+                                {(postUser !== undefined) ? <div className="post-display-name">{postUser.displayName}</div> :
+                                <div className="post-display-name"></div>}
+
+                                <div>{getDate(post.docData.timestamp)}</div>
+                            </div>
                             <img className="post-image" src={post.docData.fileUrl} alt="post" style={getAspectRatio(post.docData.aspectRatio)}></img>
+                            <div className="post-footer">
+                                Footer
+                            </div>
+                            <img className="image-mask" src={post.docData.fileUrl} alt="post"></img>
                         </div>
                     )
                 })

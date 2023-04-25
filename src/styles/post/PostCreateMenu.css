@@ -7,6 +7,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 12px;
+    z-index: 3;
 }
 
 .create-post-div#edit {
@@ -27,6 +28,7 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
+    z-index: 2;
 }
 
 #exit-button {
@@ -34,6 +36,7 @@
     top: 1rem;
     right: 1rem;
     font-size: 32px;
+    z-index: 3;
 }
 
 #exit-button:hover,
@@ -68,6 +71,7 @@
     justify-content: center;
     align-items: center;
     margin: 0;
+    z-index: 4;
 }
 
 .post-header {

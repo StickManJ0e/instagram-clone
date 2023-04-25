@@ -3,6 +3,9 @@
     --navbar-medium-width: 240px;
     --navbar-wide-width: 335px;
     --font-family-system: BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mode-background-color: rgb(255, 255, 255);
+    --mode-text-color: rgb(0, 0, 0);
+    --mode-background-color-hover: rgba(0, 0, 0, 0.05);
 }
 
 html,
@@ -12,7 +15,10 @@ body,
     padding: 0;
     width: 100%;
     font-family: var(--font-family-system);
+    background-color: var(--mode-background-color);
+    color: var(--mode-text-color);
 }
+
 html {
     height: 100%;
 }

@@ -8,15 +8,15 @@ import {
     GoogleAuthProvider,
     getAdditionalUserInfo,
     setPersistence,
-    browserLocalPersistence
+    browserLocalPersistence,
 } from "firebase/auth";
 import { setDoc, doc, serverTimestamp, collection, getDocs, query } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import '../styles/sign-in/Sign-Up.css';
 
 const SignUp = () => {
     const [user, setUser] = useState();
     const [signUpMethod, setSignUpMethod] = useState('EmailAndPassword');
-    
 
     //Update Profile Display Name
     const updateProfileUsername = (user, username) => {
@@ -31,13 +31,17 @@ const SignUp = () => {
     }
 
     //Add New User to Firestore Database
-    const saveUser = (user) => {
+    const saveUser = async (user) => {
         const userRef = doc(firestore, 'users', user.uid);
+        const profileRef = ref(getStorage(), 'assests/profile/default-profile-picture.png');
+        let url = await getDownloadURL(profileRef);
+
         setDoc(userRef, {
             email: user.email,
             uid: user.uid,
             username: user.displayName,
             displayName: user.displayName,
+            photoUrl: url,
             timestamp: serverTimestamp(),
         });
     };
