@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { firestore } from "../../firebase";
-import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, getCountFromServer, doc, getDoc, serverTimestamp } from "firebase/firestore";
+import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, getCountFromServer, doc, getDoc } from "firebase/firestore";
+import PostLikeButton from "./PostLikeButton";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
@@ -123,17 +124,27 @@ const Posts = (props) => {
         })
     }
 
+    const getPostUser = () => {
+
+    }
+
     //Get Difference between current date and timestamp
     const getDate = (timestamp) => {
         let current = new Date().getTime();
         let alteredTimestamp = new Date((timestamp.seconds * 1000) + (timestamp.nanoseconds / 1000000)).getTime();
         let timeDif = current - alteredTimestamp;
+
+        //Check if timeDif is equal or greater than a day
         if ((timeDif / (1000 * 60 * 60 * 24)) >= 1) {
-            return (`${(timeDif / (1000 * 60 * 60 * 24)).toFixed(0)} d`)
+            return (`${(timeDif / (1000 * 60 * 60 * 24)).toFixed(0)} d`);
+
+            //Check if timeDif is equal or greater than a hour
         } else if ((timeDif / (1000 * 60 * 60)) >= 1) {
-            return (`${(timeDif / (1000 * 60 * 60)).toFixed(0)} h`)
+            return (`${(timeDif / (1000 * 60 * 60)).toFixed(0)} h`);
+
+            //Return timeDif to the minute
         } else {
-            return (`${(timeDif / (1000 * 60)).toFixed(0)} m`)
+            return (`${(timeDif / (1000 * 60)).toFixed(0)} m`);
         }
     }
 
@@ -168,13 +179,15 @@ const Posts = (props) => {
                                 {(postUser !== undefined) ? <img className="post-profile-picture" src={postUser.photoUrl || ''} alt="profile" /> :
                                     <img className="post-profile-picture" src='' alt="profile-" />}
                                 {(postUser !== undefined) ? <div className="post-display-name">{postUser.displayName}</div> :
-                                <div className="post-display-name"></div>}
+                                    <div className="post-display-name"></div>}
 
                                 <div>{getDate(post.docData.timestamp)}</div>
                             </div>
                             <img className="post-image" src={post.docData.fileUrl} alt="post" style={getAspectRatio(post.docData.aspectRatio)}></img>
                             <div className="post-footer">
-                                Footer
+                                <div className="post-action-bar">
+                                    <PostLikeButton currentPost={post} postUser={postUser}/>
+                                </div>
                             </div>
                             <img className="image-mask" src={post.docData.fileUrl} alt="post"></img>
                         </div>
