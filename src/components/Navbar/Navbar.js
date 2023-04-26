@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../styles/nav/Navbar.css';
 import PostCreateMenu from "../Post/PostCreateMenu";
+import { useDarkLightContext } from "../../context/DarkLightContext";
 
 const Navbar = (props) => {
     const { setCurrentPopUp } = props;
-    const [themeMode, setThemeMode] = useState('light');
+    const {themeMode, setThemeMode} = useDarkLightContext();
     let navigate = useNavigate();
 
     const navigateMain = (path) => {
@@ -19,14 +20,8 @@ const Navbar = (props) => {
     const toggleLightDarkMode = () => {
         if (themeMode === 'light') {
             setThemeMode('dark');
-            document.documentElement.style.setProperty('--mode-background-color', 'rgb(0, 0, 0)');
-            document.documentElement.style.setProperty('--mode-text-color', 'rgb(255, 255, 255)');
-            document.documentElement.style.setProperty('--mode-background-color-hover', 'rgba(255, 255, 255, 0.1)');
         } else {
             setThemeMode('light');
-            document.documentElement.style.setProperty('--mode-background-color', 'rgb(255, 255, 255)');
-            document.documentElement.style.setProperty('--mode-text-color', 'rgb(0, 0, 0)');
-            document.documentElement.style.setProperty('--mode-background-color-hover', 'rgba(0, 0,0, 0.05)');
         }
     }
 

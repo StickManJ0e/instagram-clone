@@ -25,7 +25,7 @@ const PostLikeButton = (props) => {
         }
     }
 
-    const likePost = async (usersRef, postRef) => {
+    const likePost = async (usersRef, postRef, postUserRef) => {
         //Set Like in Users
         await setDoc(usersRef, {
             uid: currentPost.docData.uid,
@@ -38,26 +38,31 @@ const PostLikeButton = (props) => {
 
         //Set Like in Posts
         await setDoc(postRef, userDoc);
+
+        //Set Like in Post User
+        await setDoc(postUserRef, userDoc);
     }
 
-    const unlikePost = async (usersRef, postRef) => {
+    const unlikePost = async (usersRef, postRef, postUserRef) => {
         await deleteDoc(usersRef);
         await deleteDoc(postRef);
+        await deleteDoc(postUserRef)
     }
 
     const onLikeClick = async () => {
         const usersRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
         const postRef = doc(firestore, 'posts', currentPost.docId, 'liked', userData.uid);
+        const postUserRef = doc(firestore, 'users', postUser.uid, 'posts', currentPost.docId, 'liked', userData.uid);
 
         if (liked === true) {
-            likePost(usersRef, postRef);
+            likePost(usersRef, postRef, postUserRef);
         }
         if (liked === false) {
-            unlikePost(usersRef, postRef);
+            unlikePost(usersRef, postRef, postUserRef);
         }
     }
 
-    const checkLicked = async () => {
+    const checkLiked = async () => {
         const likedRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
         const docSnap = await getDoc(query(likedRef));
         if (docSnap.exists()) {
@@ -77,7 +82,7 @@ const PostLikeButton = (props) => {
 
     useEffect(() => {
         return () => {
-            checkLicked();
+            checkLiked();
         }
     }, [])
 
