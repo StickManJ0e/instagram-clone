@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase";
-import { setDoc, doc, serverTimestamp, collection, deleteDoc, Timestamp, getDoc, query, getDocs } from "firebase/firestore";
+import { setDoc, doc, deleteDoc, getDoc, query } from "firebase/firestore";
 import { useAuthContext } from "../../context/AuthContext";
 import '../../styles/post/PostLikeButton.css'
 
@@ -50,15 +50,21 @@ const PostLikeButton = (props) => {
     }
 
     const onLikeClick = async () => {
-        const usersRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
-        const postRef = doc(firestore, 'posts', currentPost.docId, 'liked', userData.uid);
-        const postUserRef = doc(firestore, 'users', postUser.uid, 'posts', currentPost.docId, 'liked', userData.uid);
+        try {
+            const usersRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
+            const postRef = doc(firestore, 'posts', currentPost.docId, 'liked', userData.uid);
+            const postUserRef = doc(firestore, 'users', postUser.uid, 'posts', currentPost.docId, 'liked', userData.uid);
 
-        if (liked === true) {
-            likePost(usersRef, postRef, postUserRef);
-        }
-        if (liked === false) {
-            unlikePost(usersRef, postRef, postUserRef);
+            if (liked === true) {
+                likePost(usersRef, postRef, postUserRef);
+            }
+            if (liked === false) {
+                unlikePost(usersRef, postRef, postUserRef);
+            }
+        } catch (error) {
+            if (error.message !== "Cannot read properties of undefined (reading 'uid')") {
+                console.log(error);
+            }
         }
     }
 
@@ -66,11 +72,9 @@ const PostLikeButton = (props) => {
         const likedRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
         const docSnap = await getDoc(query(likedRef));
         if (docSnap.exists()) {
-            console.log(true);
             setLiked(true);
             return true;
         } else {
-            console.log(false);
             setLiked(false);
             return false;
         }
