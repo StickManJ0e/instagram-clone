@@ -8,14 +8,24 @@ const Posts = (props) => {
     const { currentPosts, setCurrentPosts } = props;
     const [key, setKey] = useState();
     const [endLoad, setEndLoad] = useState();
-    const [postUsers, setPostUsers] = useState();
-    const [postLikes, setPostLikes] = useState();
     const postRef = collection(firestore, 'posts');
     let postObject = (docId, docData, postUser, likeCount) => {
         return {
-            docId, docData,
+            docId, docData, postUser, likeCount
         }
     }
+
+    //Set Current Posts on Doc Fetch for Start and Fetch Queries
+    const setQueryData = async (newArray, document) => {
+        //Get User
+        const userRef = doc(firestore, 'users', document.data().uid);
+        const docSnap = await getDoc(query(userRef));
+        //Get Likes
+        const snapshot = await getCountFromServer(collection(firestore, 'posts', document.id, 'liked'));
+        newArray.push(postObject(document.id, document.data(), docSnap.data(), snapshot.data().count));
+        setKey(document.data().timestamp);
+        setCurrentPosts(filterArrayWithId(newArray));
+    };
 
     //Filter a given array for unqiue posts based of docId
     const filterArrayWithId = (array) => {
@@ -32,12 +42,9 @@ const Posts = (props) => {
         const querySnapshot = await getDocs(query(postRef, orderBy('timestamp', 'desc'), limit(2)));
         let newArray = currentPosts;
 
-        querySnapshot.forEach((doc) => {
-            newArray.push(postObject(doc.id, doc.data()))
-            setKey(doc.data().timestamp);
+        querySnapshot.forEach((document) => {
+            setQueryData(newArray, document);
         });
-
-        setCurrentPosts(filterArrayWithId(newArray));
         queryListener();
     };
 
@@ -51,14 +58,9 @@ const Posts = (props) => {
             const querySnapshot = await getDocs(query(postRef, orderBy('timestamp', 'desc'), startAfter(key), limit(2)));
             let newArray = currentPosts;
 
-            querySnapshot.forEach((doc) => {
-                newArray.push(postObject(doc.id, doc.data()));
-                setKey(doc.data().timestamp);
+            querySnapshot.forEach((document) => {
+                setQueryData(newArray, document);
             });
-
-            setCurrentPosts(newArray);
-            getUserProfiles();
-            getPostLikes();
         }
         queryListener();
     };
@@ -67,7 +69,9 @@ const Posts = (props) => {
         //Listen for new posts created
         onSnapshot(query(postRef), (snapshot) => {
             snapshot.docChanges().forEach((change) => {
+                console.log(currentPosts);
                 let index = currentPosts.findIndex((post) => post.docId === change.doc.id);
+                console.log(index);
                 //When doc is removed
                 if (change.type === 'removed' && index !== -1) {
                     let newArray = currentPosts;
@@ -77,19 +81,35 @@ const Posts = (props) => {
 
                 if (change.type === 'modified' && index === -1) {
                     //When doc is created 
-                    let posts = currentPosts;
-                    posts = posts.unshift(postObject(change.doc.id, change.doc.data()));
-                    setCurrentPosts(filterArrayWithId(posts));
+                    const getInfo = async () => {
+                        let posts = currentPosts;
+                        //Get User Info
+                        const userRef = doc(firestore, 'users', change.doc.data().uid);
+                        const docSnap = await getDoc(query(userRef));
+
+                        //Get Likes
+                        const snapshot = await getCountFromServer(collection(firestore, 'posts', change.doc.id, 'liked'));
+                        posts = posts.unshift(postObject(change.doc.id, change.doc.data(), docSnap.data(), snapshot.data().count));
+                        setCurrentPosts(filterArrayWithId(posts));
+                    }
+                    getInfo();
                 }
 
                 //When doc is modified 
                 if (change.type === 'modified' && index !== -1) {
-                    let posts = currentPosts;
-                    posts[index] = postObject(change.doc.id, change.doc.data());
-                    setCurrentPosts(posts);
-                }
-                getUserProfiles();
-                getPostLikes();
+                    const getInfo = async () => {
+                        let posts = currentPosts;
+                        //Get User Info
+                        const userRef = doc(firestore, 'users', change.doc.data().uid);
+                        const docSnap = await getDoc(query(userRef));
+
+                        //Get Likes
+                        const snapshot = await getCountFromServer(collection(firestore, 'posts', change.doc.id, 'liked'));
+                        posts[index] = postObject(change.doc.id, change.doc.data(), docSnap.data(), snapshot.data().count);
+                        setCurrentPosts(filterArrayWithId(posts));
+                    }
+                    getInfo();
+                };
             });
         });
     }
@@ -109,26 +129,6 @@ const Posts = (props) => {
 
         return adjustedAspectRation;
     }
-
-    const getUserProfiles = () => {
-        let profileArray = [];
-
-        currentPosts.map(async (post) => {
-            const userRef = doc(firestore, 'users', post.docData.uid);
-            const docSnap = await getDoc(query(userRef));
-            console.log(docSnap.data());
-            let postUser = {
-                displayName: docSnap.data().displayName,
-                email: docSnap.data().email,
-                photoUrl: docSnap.data().photoUrl,
-                timestamp: docSnap.data().timestamp,
-                uid: docSnap.data().uid,
-                username: docSnap.data().username,
-            };
-            profileArray.push(postUser);
-            setPostUsers(profileArray);
-        })
-    };
 
     //Get Difference between current date and timestamp
     const getDate = (timestamp) => {
@@ -150,22 +150,6 @@ const Posts = (props) => {
         };
     };
 
-    //Get Number of likes for each post and put into array
-    const getPostLikes = () => {
-        let likesArray = [];
-
-        currentPosts.map(async (post) => {
-            const snapshot = await getCountFromServer(collection(firestore, 'posts', post.docId, 'liked'));
-            let collectionCount = {
-                likesNum: snapshot.data().count,
-                id: post.docId,
-            };
-
-            likesArray.push(collectionCount);
-            setPostLikes(likesArray);
-        })
-    };
-
     useEffect(() => {
         setCurrentPosts([]);
         postFirst();
@@ -178,36 +162,30 @@ const Posts = (props) => {
     }, []);
 
     useEffect(() => {
-        getUserProfiles();
-        getPostLikes();
-        console.log('change');
+        // console.log(currentPosts);
     }, [currentPosts]);
 
     return (
         <div>
             <div className="posts-div">
                 {(currentPosts) ? currentPosts.map((post) => {
-                    let postUser = undefined;
-                    if (postUsers) {
-                        let postUserIndex = postUsers.findIndex((user) => user.uid === post.docData.uid);
-                        postUser = postUsers[postUserIndex];
-                    }
+                    // let postUser = undefined;
+                    // if (postUsers) {
+                    //     let postUserIndex = postUsers.findIndex((user) => user.uid === post.docData.uid);
+                    //     postUser = postUsers[postUserIndex];
+                    // }
 
-                    let likesCount = undefined;
-                    if (postLikes) {
-                        let collectionCountIndex = postLikes.findIndex((like) => like.id === post.docId);
-                        likesCount = (postLikes[collectionCountIndex]);
-                    }
+                    // let likesCount = undefined;
+                    // if (postLikes) {
+                    //     let collectionCountIndex = postLikes.findIndex((like) => like.id === post.docId);
+                    //     likesCount = (postLikes[collectionCountIndex]);
+                    // }
 
                     return (
                         <div className="post-div" key={post.docId} id={post.docId}>
                             {/* Header */}
                             <div className="post-header">
-                                {(postUser !== undefined) ? <img className="post-profile-picture" src={postUser.photoUrl || ''} alt="profile" /> :
-                                    <img className="post-profile-picture" src='' alt="profile-" />}
-                                {(postUser !== undefined) ? <div className="post-display-name">{postUser.displayName}</div> :
-                                    <div className="post-display-name"></div>}
-
+                                <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" />
                                 <div>{getDate(post.docData.timestamp)}</div>
                             </div>
 
@@ -217,12 +195,10 @@ const Posts = (props) => {
                             {/* Footer */}
                             <div className="post-footer">
                                 <div className="post-action-bar">
-                                    <PostLikeButton currentPost={post} postUser={postUser} />
+                                    <PostLikeButton currentPost={post} postUser={post.postUser} />
                                 </div>
-                                {(likesCount !== undefined) ? <div className="post-likes">{likesCount.likesNum} Likes</div> :
-                                    <div className="post-likes">... Likes</div>}
-                                {(postUser !== undefined) ? <div className="post-caption"><p><span style={{ fontWeight: 700 }}>{postUser.displayName} </span>{post.docData.caption}</p></div> :
-                                    <div className="post-caption">{post.docData.caption}</div>}
+                                <div className="post-likes">{post.likeCount} Likes</div>
+                                <div className="post-caption"><p><span style={{ fontWeight: 700 }}>{post.postUser.displayName} </span>{post.docData.caption}</p></div>
                             </div>
 
                             {/* Image Mask */}
