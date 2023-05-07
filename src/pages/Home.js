@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar/Navbar";
 import Posts from "../components/Post/Posts";
@@ -14,7 +14,7 @@ const Home = () => {
         <div id="main-wrapper">
             <Navbar setCurrentPopUp={setCurrentPopUp} />
             <div id="main">
-                <Posts currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} />
+                <Posts currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />
             </div>
             {currentPopUp}
         </div>

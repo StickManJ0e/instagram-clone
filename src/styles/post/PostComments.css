@@ -1,0 +1,25 @@
+.comment-container {
+    display: flex;
+}
+
+.comment-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 0;
+    width: calc(100% - 42px);
+    height: fit-content;
+}
+
+.comment-wrapper>div>p {
+    margin: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    text-overflow: inherit;
+    overflow-wrap: break-word;
+    display: -webkit-box !important;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: vertical;
+    white-space: unset;
+}

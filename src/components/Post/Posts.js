@@ -1,14 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { firestore } from "../../firebase";
 import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, getCountFromServer, doc, getDoc } from "firebase/firestore";
 import PostLikeButton from "./PostLikeButton";
+import PostMenu from "./PostMenu";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
-    const { currentPosts, setCurrentPosts } = props;
+    const { currentPosts, setCurrentPosts, setCurrentPopUp } = props;
     const [key, setKey] = useState();
     const [endLoad, setEndLoad] = useState();
     const postRef = collection(firestore, 'posts');
+    let navigate = useNavigate();
     let postObject = (docId, docData, postUser, likeCount) => {
         return {
             docId, docData, postUser, likeCount
@@ -69,9 +72,7 @@ const Posts = (props) => {
         //Listen for new posts created
         onSnapshot(query(postRef), (snapshot) => {
             snapshot.docChanges().forEach((change) => {
-                console.log(currentPosts);
                 let index = currentPosts.findIndex((post) => post.docId === change.doc.id);
-                console.log(index);
                 //When doc is removed
                 if (change.type === 'removed' && index !== -1) {
                     let newArray = currentPosts;
@@ -161,31 +162,17 @@ const Posts = (props) => {
         }
     }, []);
 
-    useEffect(() => {
-        // console.log(currentPosts);
-    }, [currentPosts]);
-
     return (
         <div>
             <div className="posts-div">
                 {(currentPosts) ? currentPosts.map((post) => {
-                    // let postUser = undefined;
-                    // if (postUsers) {
-                    //     let postUserIndex = postUsers.findIndex((user) => user.uid === post.docData.uid);
-                    //     postUser = postUsers[postUserIndex];
-                    // }
-
-                    // let likesCount = undefined;
-                    // if (postLikes) {
-                    //     let collectionCountIndex = postLikes.findIndex((like) => like.id === post.docId);
-                    //     likesCount = (postLikes[collectionCountIndex]);
-                    // }
 
                     return (
                         <div className="post-div" key={post.docId} id={post.docId}>
                             {/* Header */}
                             <div className="post-header">
                                 <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" />
+                                <div>{post.postUser.username}</div>
                                 <div>{getDate(post.docData.timestamp)}</div>
                             </div>
 
@@ -199,6 +186,9 @@ const Posts = (props) => {
                                 </div>
                                 <div className="post-likes">{post.likeCount} Likes</div>
                                 <div className="post-caption"><p><span style={{ fontWeight: 700 }}>{post.postUser.displayName} </span>{post.docData.caption}</p></div>
+                                <div className="view-comments-button" onClick={() =>
+                                    setCurrentPopUp(<PostMenu setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate}/>
+                                    )}>View All Comments</div>
                             </div>
 
                             {/* Image Mask */}

@@ -72,3 +72,7 @@
     -webkit-box-orient: vertical;
     white-space: normal;
 }
+
+.view-comments-button:hover{
+    cursor: pointer;
+}
