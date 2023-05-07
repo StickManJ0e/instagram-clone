@@ -4,6 +4,7 @@ import { firestore } from "../../firebase";
 import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, getCountFromServer, doc, getDoc } from "firebase/firestore";
 import PostLikeButton from "./PostLikeButton";
 import PostMenu from "./PostMenu";
+import PostCommentsPreview from "./PostCommentsPreview";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
@@ -187,8 +188,10 @@ const Posts = (props) => {
                                 <div className="post-likes">{post.likeCount} Likes</div>
                                 <div className="post-caption"><p><span style={{ fontWeight: 700 }}>{post.postUser.displayName} </span>{post.docData.caption}</p></div>
                                 <div className="view-comments-button" onClick={() =>
-                                    setCurrentPopUp(<PostMenu setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate}/>
-                                    )}>View All Comments</div>
+                                    setCurrentPopUp(<PostMenu
+                                        setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate}
+                                    />)}>View All Comments</div>
+                                <PostCommentsPreview currentPost={post} postUser={post.postUser}/>
                             </div>
 
                             {/* Image Mask */}

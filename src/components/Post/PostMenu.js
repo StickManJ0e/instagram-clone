@@ -33,7 +33,7 @@ const PostMenu = (props) => {
                                 <div>{getDate(post.docData.timestamp)}</div>
                             </div>
                         </div>
-                        <PostComments currentPost={post} postUser={post.postUser} getDate={getDate}/>
+                        <PostComments currentPost={post} postUser={post.postUser} getDate={getDate} />
                     </div>
                     <div className="post-footer post-menu">
                         <div className="post-action-bar post-menu">

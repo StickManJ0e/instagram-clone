@@ -57,14 +57,12 @@ const PostComments = (props) => {
                         const setData = async () => {
                             const userQuery = await getDoc(doc(firestore, 'users', change.doc.data().uid));
                             newArray.unshift(commentObject(change.doc.id, change.doc.data().uid, change.doc.data().comment, change.doc.data().timestamp, userQuery.data()));
-                            console.log(filterArrayWithId(newArray));
                             setCurrentComments(filterArrayWithId(newArray));
                         }
                         setData();
                     };
 
                     if (change.type === 'modified' && index !== -1) {
-                        console.log('modified', change.doc.data());
                         const setData = async () => {
                             const userQuery = await getDoc(doc(firestore, 'users', change.doc.data().uid));
                             newArray[index] = commentObject(change.doc.id, change.doc.data().uid, change.doc.data().comment, change.doc.data().timestamp, userQuery.data());
@@ -77,10 +75,23 @@ const PostComments = (props) => {
         })
     }
 
+    const handleScroll = () => {
+        let scrollDiv = document.querySelector('.post-messages-div');
+        if (scrollDiv.scrollTop + scrollDiv.offsetHeight >= scrollDiv.scrollHeight) {
+            console.log('end');
+        }
+    }
+
     useEffect(() => {
         setCurrentComments([]);
         queryListener();
         firstComment();
+
+        let scrollDiv = document.querySelector('.post-messages-div');
+        scrollDiv.addEventListener('scroll', handleScroll);
+        return () => {
+            scrollDiv.removeEventListener('scroll', handleScroll);
+        }
     }, []);
 
     useEffect(() => {

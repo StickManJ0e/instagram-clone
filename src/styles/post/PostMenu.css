@@ -120,5 +120,16 @@
 
 .post-messages-div::-webkit-scrollbar {
     width: 0px;
-    background: transparent; /* make scrollbar transparent */
+    background: transparent;
+    /* make scrollbar transparent */
+}
+
+.post-comments-div {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.post-comment-preview>p {
+    margin: 0;
 }
