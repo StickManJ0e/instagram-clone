@@ -4,7 +4,8 @@ import Navbar from "../components/Navbar/Navbar";
 import Posts from "../components/Post/Posts";
 import '../styles/Home/Home.css'
 
-const Home = () => {
+const Home = (props) => {
+    const {setProfileUser} = props;
     const { loggedIn, userData } = useAuthContext();
     const [currentPopUp, setCurrentPopUp] = useState();
     const [currentPosts, setCurrentPosts] = useState([]);
@@ -12,9 +13,9 @@ const Home = () => {
 
     return (
         <div id="main-wrapper">
-            <Navbar setCurrentPopUp={setCurrentPopUp} />
+            <Navbar setCurrentPopUp={setCurrentPopUp} setProfileUser={setProfileUser}/>
             <div id="main">
-                <Posts currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />
+                <Posts setProfileUser={setProfileUser} currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />
             </div>
             {currentPopUp}
         </div>

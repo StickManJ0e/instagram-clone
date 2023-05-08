@@ -8,7 +8,7 @@ import PostCommentsPreview from "./PostCommentsPreview";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
-    const { currentPosts, setCurrentPosts, setCurrentPopUp } = props;
+    const { setProfileUser, currentPosts, setCurrentPosts, setCurrentPopUp } = props;
     const [key, setKey] = useState();
     const [endLoad, setEndLoad] = useState();
     const postRef = collection(firestore, 'posts');
@@ -163,6 +163,11 @@ const Posts = (props) => {
         }
     }, []);
 
+    const navProfile = (postUser) => {
+        setProfileUser(postUser);
+        navigate(`profile/${postUser.uid}`);
+    }
+
     return (
         <div>
             <div className="posts-div">
@@ -172,7 +177,7 @@ const Posts = (props) => {
                         <div className="post-div" key={post.docId} id={post.docId}>
                             {/* Header */}
                             <div className="post-header">
-                                <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" />
+                                <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" onClick={() => navProfile(post.postUser)}/>
                                 <div>{post.postUser.username}</div>
                                 <div>{getDate(post.docData.timestamp)}</div>
                             </div>

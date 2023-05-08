@@ -35,8 +35,6 @@ const PostCommentsPreview = (props) => {
         querySnapshot.forEach((document) => {
             setQueryData(newArray, document);
         });
-
-        console.log(newArray);
     };
 
     useEffect(() => {
