@@ -29,7 +29,7 @@ const Navbar = (props) => {
 
     const navigateProfile = () => {
         setProfileUser(userDoc);
-        navigateMain('/profile')
+        navigateMain(`/profile/${userDoc.username}`)
     }
 
     return (

@@ -5,13 +5,13 @@ import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, get
 import PostLikeButton from "./PostLikeButton";
 import PostMenu from "./PostMenu";
 import PostCommentsPreview from "./PostCommentsPreview";
+import PostCreateMenu from "./PostCreateMenu";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
-    const { setProfileUser, currentPosts, setCurrentPosts, setCurrentPopUp } = props;
+    const { setProfileUser, currentPosts, setCurrentPosts, setCurrentPopUp, postRef, postType } = props;
     const [key, setKey] = useState();
     const [endLoad, setEndLoad] = useState();
-    const postRef = collection(firestore, 'posts');
     let navigate = useNavigate();
     let postObject = (docId, docData, postUser, likeCount) => {
         return {
@@ -165,52 +165,72 @@ const Posts = (props) => {
 
     const navProfile = (postUser) => {
         setProfileUser(postUser);
-        navigate(`profile/${postUser.uid}`);
+        navigate(`profile/${postUser.username}`);
     }
+    if (postType === 'home') {
+        return (
+            <div>
+                <div className="posts-div">
+                    {(currentPosts) ? currentPosts.map((post) => {
 
-    return (
-        <div>
-            <div className="posts-div">
-                {(currentPosts) ? currentPosts.map((post) => {
-
-                    return (
-                        <div className="post-div" key={post.docId} id={post.docId}>
-                            {/* Header */}
-                            <div className="post-header">
-                                <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" onClick={() => navProfile(post.postUser)}/>
-                                <div>{post.postUser.username}</div>
-                                <div>{getDate(post.docData.timestamp)}</div>
-                            </div>
-
-                            {/* Image */}
-                            <img className="post-image" src={post.docData.fileUrl} alt="post" style={getAspectRatio(post.docData.aspectRatio)}></img>
-
-                            {/* Footer */}
-                            <div className="post-footer">
-                                <div className="post-action-bar">
-                                    <PostLikeButton currentPost={post} postUser={post.postUser} />
+                        return (
+                            <div className="post-div" key={post.docId} id={post.docId}>
+                                {/* Header */}
+                                <div className="post-header">
+                                    <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" onClick={() => navProfile(post.postUser)} />
+                                    <div>{post.postUser.username}</div>
+                                    <div>{getDate(post.docData.timestamp)}</div>
                                 </div>
-                                <div className="post-likes">{post.likeCount} Likes</div>
-                                <div className="post-caption"><p><span style={{ fontWeight: 700 }}>{post.postUser.displayName} </span>{post.docData.caption}</p></div>
-                                <div className="view-comments-button" onClick={() =>
-                                    setCurrentPopUp(<PostMenu
-                                        setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate}
-                                    />)}>View All Comments</div>
-                                <PostCommentsPreview currentPost={post} postUser={post.postUser}/>
+
+                                {/* Image */}
+                                <img className="post-image" src={post.docData.fileUrl} alt="post" style={getAspectRatio(post.docData.aspectRatio)}></img>
+
+                                {/* Footer */}
+                                <div className="post-footer">
+                                    <div className="post-action-bar">
+                                        <PostLikeButton currentPost={post} postUser={post.postUser} />
+                                    </div>
+                                    <div className="post-likes">{post.likeCount} Likes</div>
+                                    <div className="post-caption"><p><span style={{ fontWeight: 700 }}>{post.postUser.displayName} </span>{post.docData.caption}</p></div>
+                                    <div className="view-comments-button" onClick={() =>
+                                        setCurrentPopUp(<PostMenu
+                                            setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate}
+                                        />)}>View All Comments</div>
+                                    <PostCommentsPreview currentPost={post} postUser={post.postUser} />
+                                </div>
+
+                                {/* Image Mask */}
+                                <img className="image-mask" src={post.docData.fileUrl} alt="post"></img>
                             </div>
+                        )
+                    })
 
-                            {/* Image Mask */}
-                            <img className="image-mask" src={post.docData.fileUrl} alt="post"></img>
-                        </div>
-                    )
-                })
-
-                    : <div></div>}
+                        : ''}
+                </div>
+                {endLoad}
+                <button id="load-more" onClick={() => fetchData()}>Load More</button>
             </div>
-            {endLoad}
-            <button id="load-more" onClick={() => fetchData()}>Load More</button>
-        </div>
-    )
+        )
+    } else if (postType === 'profile') {
+        return (
+            <div>
+                <div className="posts-div">
+                    {(currentPosts) ? currentPosts.map((post) => {
+                        return (
+                            <div className="post-div" key={post.docId} id={post.docId} >
+                                {/* Image */}
+                                <div onClick={() => setCurrentPopUp(<PostMenu setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate} />)}>Hi</div>
+                                <img className="post-image" src={post.docData.fileUrl} alt="post" style={getAspectRatio(post.docData.aspectRatio)}></img>
+                            </div>
+                        )
+                    })
+                        : ''}
+                </div>
+                {endLoad}
+                <button id="load-more" onClick={() => fetchData()}>Load More</button>
+            </div>
+        )
+    }
 }
 
 export default Posts;

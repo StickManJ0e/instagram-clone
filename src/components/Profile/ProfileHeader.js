@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase";
 import { getCountFromServer, collection, doc, setDoc, getDoc, query, deleteDoc } from "firebase/firestore";
 import { useAuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ProfileHeader = (props) => {
     const { profileUser } = props;
@@ -12,6 +13,7 @@ const ProfileHeader = (props) => {
     const { loggedIn, userData, userDoc } = useAuthContext();
     const usersRef = doc(firestore, 'users', userData.uid, 'following', profileUser.uid);
     const profileRef = doc(firestore, 'users', profileUser.uid, 'followers', userData.uid);
+    const navigate = useNavigate();
 
     //Get number of posts, followers and following and set respective states
     const getCounts = async () => {
@@ -66,9 +68,9 @@ const ProfileHeader = (props) => {
     });
 
     const userProfileElm = (
-        <div>
+        <div className="">
             <div>{profileUser.username}</div>
-            <button id="edit-profile-button">Edit Profile</button>
+            <button id="edit-profile-button" onClick={() => navigate('/settings/edit')}>Edit Profile</button>
         </div>
     );
 
@@ -76,6 +78,7 @@ const ProfileHeader = (props) => {
         <div>
             <div>{profileUser.username}</div>
             <button id="follow-button" onClick={() => onFollowClick()}>Following</button>
+            <button onClick={() => navigate('/messages')}>Message</button>
         </div>
     )
 
@@ -83,12 +86,9 @@ const ProfileHeader = (props) => {
         <div>
             <div>{profileUser.username}</div>
             <button id="follow-button" onClick={() => onFollowClick()}>Follow</button>
+            <button onClick={() => navigate('/messages')} >Message</button>
         </div>
     )
-
-    useEffect(() => {
-        console.log(isFollowing);
-    }, [isFollowing])
 
     return (
         <div className="profile-header">
@@ -98,11 +98,13 @@ const ProfileHeader = (props) => {
                     (profileUser.uid !== userData.uid && isFollowing === true) ? isFollowingProfileElm :
                         (profileUser.uid !== userData.uid && isFollowing === false) ? notFollowingProfileElm :
                             <div></div>}
-                <div>
+                <div className="counts-div">
                     <div>{postCount} post</div>
                     <div>{followerCount} followers</div>
                     <div>{followingCount} following</div>
                 </div>
+                <div>{profileUser.displayName}</div>
+                <div>{(profileUser.description !== undefined) ? profileUser.description : ''}</div>
             </div>
         </div>
     );

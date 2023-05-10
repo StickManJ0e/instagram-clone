@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { firestore } from "../firebase";
+import { collection } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthContext";
 import Navbar from "../components/Navbar/Navbar";
 import Posts from "../components/Post/Posts";
@@ -9,13 +11,13 @@ const Home = (props) => {
     const { loggedIn, userData } = useAuthContext();
     const [currentPopUp, setCurrentPopUp] = useState();
     const [currentPosts, setCurrentPosts] = useState([]);
-    let user = userData;
+    const postRef = collection(firestore, 'posts');
 
     return (
         <div id="main-wrapper">
             <Navbar setCurrentPopUp={setCurrentPopUp} setProfileUser={setProfileUser}/>
             <div id="main">
-                <Posts setProfileUser={setProfileUser} currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />
+                <Posts postType={'home'} postRef={postRef} setProfileUser={setProfileUser} currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />
             </div>
             {currentPopUp}
         </div>
