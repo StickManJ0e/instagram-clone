@@ -14,7 +14,7 @@ const Settings = (props) => {
 
     useEffect(() => {
         setCurrentMenu(menu);
-    }, [])
+    }, [menu])
 
     return (
         <div className="settings-wrapper">

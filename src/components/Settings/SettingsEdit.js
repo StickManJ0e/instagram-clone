@@ -10,6 +10,7 @@ const SettingsEdit = (props) => {
     const { loggedIn, userData, userDoc } = useAuthContext();
     const [profileSrc, setProfileSrc] = useState();
     const [profileFile, setProfileFile] = useState();
+    const [displayNameInput, setDisplayNameInput] = useState(userDoc.displayName);
     const [userBio, setUserBio] = useState();
     const navigate = useNavigate();
     const userRef = doc(firestore, 'users', userDoc.uid);
@@ -53,6 +54,12 @@ const SettingsEdit = (props) => {
         });
     }
 
+    const updateUserDisplayName = async () => {
+        await updateDoc(userRef, {
+            displayName: displayNameInput,
+        });
+    }
+
     const saveChanges = async () => {
         if (profileFile !== undefined) {
             updateProfilePicture();
@@ -61,6 +68,8 @@ const SettingsEdit = (props) => {
         if (userBio !== undefined) {
             updateUserBio();
         };
+
+        updateUserDisplayName();
 
         navigate(`/profile/${userDoc.username}`);
     }
@@ -80,6 +89,10 @@ const SettingsEdit = (props) => {
                     <input id='file-input' type='file' name="file" accept="image/jpeg, image/png" hidden />
                     <button onClick={() => uploadFileClick()}>Change profile picture</button>
                 </div>
+            </div>
+            <div>
+                <label htmlFor="display-name">Display Name</label>
+                <textarea type="text" id="display-name-input" name="display-name" value={displayNameInput} maxLength="150" onChange={(e) => setDisplayNameInput(e.target.value)}></textarea>
             </div>
             <div>
                 <label htmlFor="bio">Bio</label>

@@ -21,7 +21,8 @@ const App = () => {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/messages' element={loggedIn ? <Messages setProfileUser={setProfileUser}/> : <Navigate to='/sign-in' />} />
         <Route path='/profile/:id' element={loggedIn ? <Profile profileUser={profileUser} setProfileUser={setProfileUser} /> : <Navigate to='/sign-in' />} />
-        <Route path='/settings/edit' element={loggedIn ? <Settings setProfileUser={setProfileUser} menu={'edit'}/> : <Navigate to='/sign-in' />} />
+        <Route exact path='/settings/edit' element={loggedIn ? <Settings setProfileUser={setProfileUser} menu={'edit'}/> : <Navigate to='/sign-in' />} />
+        <Route exact path='/settings/account' element={loggedIn ? <Settings setProfileUser={setProfileUser} menu={'account'}/> : <Navigate to='/sign-in' />} />
       </Routes>
     </BrowserRouter>
   )
