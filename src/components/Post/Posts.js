@@ -5,7 +5,6 @@ import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, get
 import PostLikeButton from "./PostLikeButton";
 import PostMenu from "./PostMenu";
 import PostCommentsPreview from "./PostCommentsPreview";
-import PostCreateMenu from "./PostCreateMenu";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
@@ -153,6 +152,8 @@ const Posts = (props) => {
     };
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        setKey();
         setCurrentPosts([]);
         postFirst();
 

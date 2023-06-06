@@ -104,7 +104,7 @@ const ProfileHeader = (props) => {
                     <div>{followingCount} following</div>
                 </div>
                 <div>{profileUser.displayName}</div>
-                <div>{(profileUser.description !== undefined) ? profileUser.description : ''}</div>
+                {(profileUser.bio !== undefined) ? <div>{profileUser.bio}</div> : ''}
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import { auth, firestore } from '../firebase';
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, query } from "firebase/firestore";
+import {query, onSnapshot, doc, getDoc } from "firebase/firestore";
 
 let AuthContext = createContext({
     loggedIn: false,
@@ -14,27 +14,29 @@ const AuthContextProvider = ({ children }) => {
     const [userData, setUserData] = useState();
     const [userDoc, setUserDoc] = useState();
 
-    const getUserDoc = async (uid) => {
-        const userRef = doc(firestore, 'users', uid);
+    const queryListener = (userRef) => {
+        onSnapshot(query(userRef), (snapshot) => {
+            console.log(snapshot.data());
+            setUserDoc(snapshot.data());
+        });
+    }
+
+    const getUserDoc = async (userRef) => {
+        queryListener(userRef);
         const docSnap = await getDoc(query(userRef));
-        let postUser = {
-            displayName: docSnap.data().displayName,
-            email: docSnap.data().email,
-            photoUrl: docSnap.data().photoUrl,
-            timestamp: docSnap.data().timestamp,
-            uid: docSnap.data().uid,
-            username: docSnap.data().username,
-        };
+        let postUser = docSnap.data();
         setUserDoc(postUser);
+        queryListener(userRef);
     }
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
+            const userRef = doc(firestore, 'users', user.uid);
             if (user) {
+                queryListener(userRef);
                 setLoggedIn(true);
                 setUserData(user);
-                getUserDoc(user.uid);
-
+                getUserDoc(userRef);
             } else {
                 setLoggedIn(false);
             }

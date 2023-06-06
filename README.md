@@ -11,7 +11,7 @@
 - Can change username and password
 
 ###Posts 
-- Make Image or Video Posts with text.
+- Make Image with text.
     - Use `Firestore`
 - Delete Posts
 - Like posts.

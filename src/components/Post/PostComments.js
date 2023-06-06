@@ -78,7 +78,7 @@ const PostComments = (props) => {
     const handleScroll = () => {
         let scrollDiv = document.querySelector('.post-messages-div');
         if (scrollDiv.scrollTop + scrollDiv.offsetHeight >= scrollDiv.scrollHeight) {
-            console.log('end');
+
         }
     }
 

@@ -15,13 +15,20 @@ const Profile = (props) => {
     const [currentPosts, setCurrentPosts] = useState([]);
     const postRef = collection(firestore, 'users', profileUser.uid, 'posts');
 
+    useEffect(() => {
+        if (profileUser.uid === userDoc.uid) {
+            setProfileUser(userDoc);
+            console.log(profileUser);
+        }
+    }, [userDoc]);
+
     return (
         <div id="profile-wrapper">
             <Navbar setCurrentPopUp={setCurrentPopUp} setProfileUser={setProfileUser} />
             <div id="profile">
-                <ProfileHeader profileUser={profileUser} />
+                <ProfileHeader profileUser={profileUser} setProfileUser={setProfileUser} />
                 <div className="profile-posts">
-                    <Posts postType={'profile'} postRef={postRef} setProfileUser={setProfileUser} currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp}/>
+                    <Posts postType={'profile'} postRef={postRef} setProfileUser={setProfileUser} currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />
                 </div>
             </div>
             {currentPopUp}
