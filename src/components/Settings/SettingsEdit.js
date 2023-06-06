@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../../context/AuthContext";
-import { firestore } from "../../firebase";
+import { firestore, auth } from "../../firebase";
 import { ref, getStorage, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const SettingsEdit = (props) => {
-    const { setProfileUser } = props;
     const { loggedIn, userData, userDoc } = useAuthContext();
     const [profileSrc, setProfileSrc] = useState();
     const [profileFile, setProfileFile] = useState();
@@ -58,6 +58,10 @@ const SettingsEdit = (props) => {
         await updateDoc(userRef, {
             displayName: displayNameInput,
         });
+
+        updateProfile(auth.currentUser, {
+            displayName: displayNameInput,
+        })
     }
 
     const saveChanges = async () => {

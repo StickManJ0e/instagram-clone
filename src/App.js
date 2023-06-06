@@ -12,17 +12,18 @@ import './styles/App.css';
 const App = () => {
   const { loggedIn, userData, userDoc } = useAuthContext();
   const [profileUser, setProfileUser] = useState();
+  const [currentPopUp, setCurrentPopUp] = useState();
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path='/' element={loggedIn ? <Home setProfileUser={setProfileUser} /> : <Navigate to='/sign-in' />} />
+        <Route exact path='/' element={loggedIn ? <Home setProfileUser={setProfileUser} currentPopUp={currentPopUp} setCurrentPopUp={setCurrentPopUp}/> : <Navigate to='/sign-in' />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/messages' element={loggedIn ? <Messages setProfileUser={setProfileUser}/> : <Navigate to='/sign-in' />} />
         <Route path='/profile/:id' element={loggedIn ? <Profile profileUser={profileUser} setProfileUser={setProfileUser} /> : <Navigate to='/sign-in' />} />
-        <Route exact path='/settings/edit' element={loggedIn ? <Settings setProfileUser={setProfileUser} menu={'edit'}/> : <Navigate to='/sign-in' />} />
-        <Route exact path='/settings/account' element={loggedIn ? <Settings setProfileUser={setProfileUser} menu={'account'}/> : <Navigate to='/sign-in' />} />
+        <Route exact path='/settings/edit' element={loggedIn ? <Settings setProfileUser={setProfileUser} menu={'edit'} currentPopUp={currentPopUp} setCurrentPopUp={setCurrentPopUp}/> : <Navigate to='/sign-in' />} />
+        <Route exact path='/settings/account' element={loggedIn ? <Settings setProfileUser={setProfileUser} menu={'account'} currentPopUp={currentPopUp} setCurrentPopUp={setCurrentPopUp}/> : <Navigate to='/sign-in' />} />
       </Routes>
     </BrowserRouter>
   )

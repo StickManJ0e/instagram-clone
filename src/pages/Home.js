@@ -7,9 +7,8 @@ import Posts from "../components/Post/Posts";
 import '../styles/Home/Home.css'
 
 const Home = (props) => {
-    const {setProfileUser} = props;
-    const { loggedIn, userData } = useAuthContext();
-    const [currentPopUp, setCurrentPopUp] = useState();
+    const {setProfileUser, currentPopUp, setCurrentPopUp} = props;
+    const { loggedIn, userData, userDoc } = useAuthContext();
     const [currentPosts, setCurrentPosts] = useState([]);
     const postRef = collection(firestore, 'posts');
 

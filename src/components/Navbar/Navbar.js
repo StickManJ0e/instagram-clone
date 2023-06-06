@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../styles/nav/Navbar.css';
 import PostCreateMenu from "../Post/PostCreateMenu";
 import { useDarkLightContext } from "../../context/DarkLightContext";
 import { useAuthContext } from "../../context/AuthContext";
+import NavbarMoreMenu from "./NavbarMoreMenu";
 
 const Navbar = (props) => {
     const { setCurrentPopUp, setProfileUser } = props;
+    const [NavbarMorePopup, setNavbarMorePopup] = useState();
     const { loggedIn, userData, userDoc } = useAuthContext();
-    const {themeMode, setThemeMode} = useDarkLightContext();
     let navigate = useNavigate();
 
     const navigateMain = (path) => {
@@ -17,14 +18,6 @@ const Navbar = (props) => {
 
     const onCreateClick = () => {
         setCurrentPopUp(<PostCreateMenu setCurrentPopUp={setCurrentPopUp} />);
-    }
-
-    const toggleLightDarkMode = () => {
-        if (themeMode === 'light') {
-            setThemeMode('dark');
-        } else {
-            setThemeMode('light');
-        }
     }
 
     const navigateProfile = () => {
@@ -44,8 +37,8 @@ const Navbar = (props) => {
                 <div onClick={() => navigateProfile()}>Profile</div>
             </div>
             <div id="more-div">
-                <div onClick={() => toggleLightDarkMode()}>Light/Dark Mode</div>
-                <div>More</div>
+                {NavbarMorePopup}
+                <div onClick={() => setNavbarMorePopup(<NavbarMoreMenu setNavbarMorePopup={setNavbarMorePopup} />)}>More</div>
             </div>
         </div>
     );

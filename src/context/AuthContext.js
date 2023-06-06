@@ -16,7 +16,6 @@ const AuthContextProvider = ({ children }) => {
 
     const queryListener = (userRef) => {
         onSnapshot(query(userRef), (snapshot) => {
-            console.log(snapshot.data());
             setUserDoc(snapshot.data());
         });
     }
