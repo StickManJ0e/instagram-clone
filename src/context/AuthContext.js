@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import { auth, firestore } from '../firebase';
 import { onAuthStateChanged } from "firebase/auth";
-import {query, onSnapshot, doc, getDoc } from "firebase/firestore";
+import { query, onSnapshot, doc, getDoc } from "firebase/firestore";
 
 let AuthContext = createContext({
     loggedIn: false,
@@ -30,8 +30,8 @@ const AuthContextProvider = ({ children }) => {
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
-            const userRef = doc(firestore, 'users', user.uid);
             if (user) {
+                const userRef = doc(firestore, 'users', user.uid);
                 queryListener(userRef);
                 setLoggedIn(true);
                 setUserData(user);

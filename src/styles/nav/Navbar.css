@@ -25,7 +25,9 @@ a {
 }
 
 #navbar-buttons-div>*:hover,
-#more-div>div:hover {
+#more-div>div:hover,
+.more-options>div:hover,
+.logout-div:hover {
     cursor: pointer;
     background-color: var(--mode-background-color-hover);
 }
