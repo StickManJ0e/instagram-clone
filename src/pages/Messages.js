@@ -7,10 +7,10 @@ const Messages = (props) => {
     const [currentPopUp, setCurrentPopUp] = useState();
 
     return (
-        <div className="messages-wrapper">
+        <div id="messages-wrapper">
             <Navbar setCurrentPopUp={setCurrentPopUp} setProfileUser={setProfileUser} />
-            <div className="messages-main">
-                Messages
+            <div id="messages-main">
+                <div>Messages</div>
             </div>
             {currentPopUp}
         </div>

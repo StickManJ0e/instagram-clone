@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { useDarkLightContext } from "../../context/DarkLightContext";
@@ -25,16 +25,29 @@ const NavbarMoreMenu = (props) => {
         })
     };
 
+    const handleClickOutside = (e) => {
+        let wrapper = document.querySelector('#more-menu');
+        let button = document.querySelector('#more-button');
+        if (!(wrapper.contains(e.target)) && e.target !== button) {
+            setNavbarMorePopup();
+        };
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, []);
+
     return (
-        <div id="more-menu-wrapper">
-            <div onClick={() => setNavbarMorePopup()} className="more-popup-close"></div>
-            <div id="more-menu">
-                <div className="more-options">
-                    <div onClick={() => navigate('/settings/account')}>Settings</div>
-                    <div onClick={() => toggleLightDarkMode()}>Switch Appearance</div>
-                </div>
-                <div className="logout-div" onClick={() => logout()}>Logout</div>
+        <div id="more-menu">
+            <div className="more-options">
+                <div onClick={() => navigate('/settings/account')}>Settings</div>
+                <div onClick={() => toggleLightDarkMode()}>Switch Appearance</div>
             </div>
+            <div className="logout-div" onClick={() => logout()}>Logout</div>
         </div>
     );
 };

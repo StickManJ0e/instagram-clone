@@ -3,19 +3,19 @@
 ##Features
 
 ###Profile
-- Login and authenticate (Google or manual)
+- [x] Login and authenticate (Google or manual)
     - Use `Firestore`
-- Follow or unfollow people
-- Show display name, username, # followers, # following, # posts, description, posts
-    - Have edit profile button
+- [x] Follow or unfollow people
+- [x] Show display name, username, # followers, # following, # posts, description, posts
+    - [x] Have edit profile button
 - Can change username and password
 
 ###Posts 
-- Make Image with text.
+- [x] Make Image post with text.
     - Use `Firestore`
 - Delete Posts
-- Like posts.
-- Comment on Posts.
+- [x] Like posts.
+- [x] Comment on Posts.
 - Share Posts.
 
 ###Messaging
@@ -34,6 +34,7 @@
 
 ###Settings
 - Change username, password, email, notifications
+- [x] Change profile picture, bio and display name
 
 ###Themes
 - Light and dark modes
