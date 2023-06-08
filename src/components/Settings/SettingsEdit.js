@@ -37,7 +37,7 @@ const SettingsEdit = (props) => {
     };
 
     const updateProfilePicture = async () => {
-        const filePath = `${userDoc.uid}/${profileFile.name}`;
+        const filePath = `${userDoc.uid}/profile/profile-picture`;
         const newFileRef = ref(getStorage(), filePath);
         const fileSnapshop = await uploadBytesResumable(newFileRef, profileFile);
         const publicFileUrl = await getDownloadURL(newFileRef);

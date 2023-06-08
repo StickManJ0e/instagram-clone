@@ -26,6 +26,7 @@ a {
 }
 
 #navbar-buttons-div>*:hover,
+#more-button:hover,
 .more-options>div:hover,
 .logout-div:hover {
     cursor: pointer;

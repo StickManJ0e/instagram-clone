@@ -13,7 +13,9 @@
 ###Posts 
 - [x] Make Image post with text.
     - Use `Firestore`
-- Delete Posts
+- Post Options
+    - Unfollow Poster, get link, go to post
+    - Delete post, edit post, go to post
 - [x] Like posts.
 - [x] Comment on Posts.
 - Share Posts.

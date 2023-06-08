@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
+import InstagramLogo from '../components/Misc/instagram-logo'
+import '../styles/sign-in/Sign-In.css';
 
 const SignIn = () => {
     const [redirectHome, setRedirectHome] = useState();
@@ -25,20 +27,23 @@ const SignIn = () => {
         setPersistence(auth, browserLocalPersistence)
             .then(() => {
                 signInWithPopup(auth, provider)
-                .then((result) => {
-                    setRedirectHome(<Navigate to='/' />);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+                    .then((result) => {
+                        setRedirectHome(<Navigate to='/' />);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             });
     }
 
     return (
         <div className="main-sign-in main">
             {redirectHome}
-            <div className="sign-in-div" onSubmit={(e) => signInOnSubmit(e)}>
-                <form className="sign-in-form">
+            <div className="sign-in-div">
+                <div>
+                    <InstagramLogo height="51px" width="175px" />
+                </div>
+                <form className="sign-in-form" onSubmit={(e) => signInOnSubmit(e)}>
                     <label htmlFor="email"></label>
                     <input type="email" name="email" id="email" placeholder="Email" required></input>
 

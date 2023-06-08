@@ -5,6 +5,7 @@ import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, get
 import PostLikeButton from "./PostLikeButton";
 import PostMenu from "./PostMenu";
 import PostCommentsPreview from "./PostCommentsPreview";
+import PostOptions from "./PostOptions";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
@@ -122,6 +123,7 @@ const Posts = (props) => {
         }
     }
 
+    //Format aspect ratio based on input
     const getAspectRatio = (aspectRatio) => {
         let adjustedAspectRation = (aspectRatio === 'orginal') ? { aspectRatio: 'auto' }
             : (aspectRatio === '1:1') ? { aspectRatio: '1/1' }
@@ -155,12 +157,12 @@ const Posts = (props) => {
         window.scrollTo(0, 0);
         setKey();
         setCurrentPosts([]);
-        postFirst();
 
         document.addEventListener('scroll', handleScroll);
 
         return () => {
             document.removeEventListener('scroll', handleScroll);
+            postFirst();
         }
     }, []);
 
@@ -168,6 +170,11 @@ const Posts = (props) => {
         setProfileUser(postUser);
         navigate(`profile/${postUser.username}`);
     }
+
+    const onMoreOptionsClick = (post) => {
+        setCurrentPopUp(<PostOptions setCurrentPopUp={setCurrentPopUp} currentPost={post} />)
+    }
+
     if (postType === 'home') {
         return (
             <div>
@@ -181,6 +188,11 @@ const Posts = (props) => {
                                     <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" onClick={() => navProfile(post.postUser)} />
                                     <div>{post.postUser.username}</div>
                                     <div>{getDate(post.docData.timestamp)}</div>
+                                    <svg onClick={() => onMoreOptionsClick(post)} className="more-options-button" aria-label="More Options" color="var(--mode-text-color)" fill="var(--mode-text-color)" height={24} role="img" viewBox="0 0 24 24" width={24}>
+                                        <circle cx={12} cy={12} r={1.5}></circle>
+                                        <circle cx={6} cy={12} r={1.5}></circle>
+                                        <circle cx={18} cy={12} r={1.5}></circle>
+                                    </svg>
                                 </div>
 
                                 {/* Image */}

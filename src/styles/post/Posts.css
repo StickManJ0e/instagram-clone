@@ -54,6 +54,7 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .post-footer {
@@ -74,6 +75,7 @@
     white-space: normal;
 }
 
-.view-comments-button:hover{
+.view-comments-button:hover,
+.more-options-button:hover {
     cursor: pointer;
 }

@@ -25,7 +25,7 @@ const PostLikeButton = (props) => {
         }
     }
 
-    const likePost = async (usersRef, postRef, postUserRef) => {
+    const likePost = async (usersRef, postRef) => {
         //Set Like in Users
         await setDoc(usersRef, {
             uid: currentPost.docData.uid,
@@ -38,28 +38,23 @@ const PostLikeButton = (props) => {
 
         //Set Like in Posts
         await setDoc(postRef, userDoc);
-
-        //Set Like in Post User
-        await setDoc(postUserRef, userDoc);
     }
 
-    const unlikePost = async (usersRef, postRef, postUserRef) => {
+    const unlikePost = async (usersRef, postRef) => {
         await deleteDoc(usersRef);
         await deleteDoc(postRef);
-        await deleteDoc(postUserRef)
     }
 
     const onLikeClick = async () => {
         try {
             const usersRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
             const postRef = doc(firestore, 'posts', currentPost.docId, 'liked', userData.uid);
-            const postUserRef = doc(firestore, 'users', postUser.uid, 'posts', currentPost.docId, 'liked', userData.uid);
 
             if (liked === true) {
-                likePost(usersRef, postRef, postUserRef);
+                likePost(usersRef, postRef);
             }
             if (liked === false) {
-                unlikePost(usersRef, postRef, postUserRef);
+                unlikePost(usersRef, postRef);
             }
         } catch (error) {
             if (error.message !== "Cannot read properties of undefined (reading 'uid')") {

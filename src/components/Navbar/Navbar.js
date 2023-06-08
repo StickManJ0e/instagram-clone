@@ -6,6 +6,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import NavbarMoreMenu from "./NavbarMoreMenu";
 import NavbarSearchMenu from "./NavbarSearchMenu";
 import NavbarNotificationsMenu from "./NavbarNotificationsMenu";
+import InstagramLogo from "../Misc/instagram-logo";
 
 const Navbar = (props) => {
     const { setCurrentPopUp, setProfileUser } = props;
@@ -55,7 +56,9 @@ const Navbar = (props) => {
     return (
         <div id="navbar" style={navbarStyling}>
             {NavbarPopup}
-            <div id="logo-div">Logo</div>
+            <div id="logo-div">
+                <InstagramLogo height={29} width={103}/>
+            </div>
             <div id="navbar-buttons-div">
                 <div onClick={() => navigateMain('/')}>Home</div>
                 <div id="search-button" onClick={() => onSearchClick()}>Search</div>

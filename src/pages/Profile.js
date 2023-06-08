@@ -18,7 +18,6 @@ const Profile = (props) => {
     useEffect(() => {
         if (profileUser.uid === userDoc.uid) {
             setProfileUser(userDoc);
-            console.log(profileUser);
         }
     }, [userDoc]);
 

@@ -37,7 +37,7 @@ const PostCreateMenu = (props) => {
                 timestamp: serverTimestamp(),
             });
 
-            const filePath = `${user.uid}/${postRef.id}/${selectedFile.name}`;
+            const filePath = `${user.uid}/${postRef.id}/posts/${selectedFile.name}`;
             const newFileRef = ref(getStorage(), filePath);
             const fileSnapshop = await uploadBytesResumable(newFileRef, selectedFile);
 

@@ -33,7 +33,7 @@ const SignUp = () => {
     //Add New User to Firestore Database
     const saveUser = async (user) => {
         const userRef = doc(firestore, 'users', user.uid);
-        const profileRef = ref(getStorage(), 'assests/profile/default-profile-picture.png');
+        const profileRef = ref(getStorage(), 'assets/profile/default-profile-picture.png');
         let url = await getDownloadURL(profileRef);
 
         setDoc(userRef, {
