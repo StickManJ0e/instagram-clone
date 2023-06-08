@@ -1,16 +1,16 @@
-#Plan
+# Plan
 
-##Features
+## Features
 
-###Profile
+### Profile
 - [x] Login and authenticate (Google or manual)
     - Add alert if email or username already in use
 - [x] Follow or unfollow people
 - [x] Show display name, username, # followers, # following, # posts, description, posts
     - [x] Have edit profile button
-- Can change username and password
+- [] Can change username and password
 
-###Posts 
+### Posts 
 - [x] Make Image post with text.
     - Use `Firestore`
 - Post Options
@@ -18,27 +18,27 @@
     - Delete post, edit post, go to post
 - [x] Like posts.
 - [x] Comment on Posts.
-- Share Posts.
+- Share Posts via messages.
 
-###Messaging
+### Messaging
 - Message other users realtime
     - Use `Firestore`
 
-###Notifications
+### Notifications
 - Get notifications if:
     - Posts liked, commented
     - Followed or messages by other users
         - Use `Firestore`
 
-###Search
+### Search
 - Search for other users and update results realtime
     - Use `Firestore`
 
-###Settings
-- Change username, password, email, notifications
+### Settings
+- [x] Change username, password, email
 - [x] Change profile picture, bio and display name
 
-###Themes
+### Themes
 - Light and dark modes
 
 ###Accessibility 
@@ -49,12 +49,14 @@
 
 ##Users
 - Users
-    -> unique user
+    - unique user
         - UserInfo: Username, Display name, Profile Picture, User UID, email, profile description, created date;
-        -> Messages
+        - Messages
             - Each conversation
-        -> Posts
+        - Posts
+        - Liked
+        - Following
 
 - Posts
-    -> unique post
-    - PostInfo: User UID, image data, caption, aspect ratio, timestamp
+    - unique post
+        - PostInfo: User UID, image data, caption, aspect ratio, timestamp
