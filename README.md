@@ -41,14 +41,14 @@
 ### Themes
 - Light and dark modes
 
-###Accessibility 
+### Accessibility 
 - Built for mobile
 
 
-#Firestore Database Planning
+# Firestore Database Planning
 
-##Users
-- Users
+## Users
+### Users
     - unique user
         - UserInfo: Username, Display name, Profile Picture, User UID, email, profile description, created date;
         - Messages
@@ -57,6 +57,6 @@
         - Liked
         - Following
 
-- Posts
+### Posts
     - unique post
         - PostInfo: User UID, image data, caption, aspect ratio, timestamp
