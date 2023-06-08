@@ -1,9 +1,10 @@
 import React from "react";
 import '../../styles/post/PostOptions.css'
 import { useAuthContext } from "../../context/AuthContext";
-import FollowButton from "../Profile/FollowButton";
 import { firestore } from "../../firebase";
 import { doc, deleteDoc, query, getDocs, collection } from "firebase/firestore";
+import FollowButton from "../Profile/FollowButton";
+import PostEditMenu from "./PostEditMenu";
 
 const PostOptions = (props) => {
     const { setCurrentPopUp, currentPost } = props;
@@ -36,6 +37,10 @@ const PostOptions = (props) => {
         });
 
         setCurrentPopUp();
+    };
+
+    const editPost = () => {
+        setCurrentPopUp(<PostEditMenu setCurrentPopUp={setCurrentPopUp} />)
     }
 
     //If post was created by the current user
@@ -45,7 +50,7 @@ const PostOptions = (props) => {
                 <div id="popup-backdrop" onClick={() => exitPopup()}></div>
                 <div className="post-options-div">
                     <div onClick={() => deletePost()}>Delete</div>
-                    <div>Edit</div>
+                    <div onClick={() => editPost()}>Edit</div>
                     <div>Go to post</div>
                     <div onClick={() => exitPopup()}>Cancel</div>
                 </div>

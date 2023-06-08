@@ -4,7 +4,7 @@
 
 ###Profile
 - [x] Login and authenticate (Google or manual)
-    - Use `Firestore`
+    - Add alert if email or username already in use
 - [x] Follow or unfollow people
 - [x] Show display name, username, # followers, # following, # posts, description, posts
     - [x] Have edit profile button

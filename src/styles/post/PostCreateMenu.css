@@ -1,5 +1,5 @@
 .post-wrapper > .create-post-div {
-    background-color: white;
+    background-color: var(--mode-background-color);
     position: absolute;
     left: 50%;
     top: 50%;

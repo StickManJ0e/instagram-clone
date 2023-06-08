@@ -1,0 +1,13 @@
+#edit-post-div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    z-index: 3;
+    background-color: var(--mode-background-color);
+    width: 500px;
+    height: 500px;
+}
