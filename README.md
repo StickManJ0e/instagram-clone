@@ -8,7 +8,7 @@
 - [x] Follow or unfollow people
 - [x] Show display name, username, # followers, # following, # posts, description, posts
     - [x] Have edit profile button
-- [] Can change username and password
+- Can change username and password
 
 ### Posts 
 - [x] Make Image post with text.
