@@ -28,6 +28,7 @@ const ProfileHeader = (props) => {
     //Set post, follower, and following counts and check if following account on profile load
     useEffect(() => {
         getCounts();
+
     });
 
     const userProfileElm = (

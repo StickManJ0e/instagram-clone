@@ -5,10 +5,12 @@ import { firestore } from "../../firebase";
 import { doc, deleteDoc, query, getDocs, collection } from "firebase/firestore";
 import FollowButton from "../Profile/FollowButton";
 import PostEditMenu from "./PostEditMenu";
+import { useNavigate } from "react-router-dom";
 
 const PostOptions = (props) => {
     const { setCurrentPopUp, currentPost } = props;
     const { loggedIn, userData, userDoc } = useAuthContext();
+    const navigate = useNavigate();
 
     const exitPopup = () => {
         setCurrentPopUp();
@@ -40,7 +42,11 @@ const PostOptions = (props) => {
     };
 
     const editPost = () => {
-        setCurrentPopUp(<PostEditMenu setCurrentPopUp={setCurrentPopUp} currentPost={currentPost}/>)
+        setCurrentPopUp(<PostEditMenu setCurrentPopUp={setCurrentPopUp} currentPost={currentPost} />)
+    }
+
+    const onGoToPost = () => {
+        navigate(`/post/${currentPost.docId}`);
     }
 
     //If post was created by the current user
@@ -51,7 +57,7 @@ const PostOptions = (props) => {
                 <div className="post-options-div">
                     <div onClick={() => deletePost()}>Delete</div>
                     <div onClick={() => editPost()}>Edit</div>
-                    <div>Go to post</div>
+                    <div onClick={() => onGoToPost()}>Go to post</div>
                     <div onClick={() => exitPopup()}>Cancel</div>
                 </div>
             </div>

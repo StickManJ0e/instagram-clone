@@ -9,7 +9,7 @@ import NavbarNotificationsMenu from "./NavbarNotificationsMenu";
 import InstagramLogo from "../Misc/instagram-logo";
 
 const Navbar = (props) => {
-    const { setCurrentPopUp, setProfileUser } = props;
+    const { setCurrentPopUp } = props;
     const [NavbarMorePopup, setNavbarMorePopup] = useState();
     const [NavbarPopup, setNavbarPopup] = useState();
     const [navbarStyling, setNavbarStyling] = useState();
@@ -25,7 +25,6 @@ const Navbar = (props) => {
     }
 
     const navigateProfile = () => {
-        setProfileUser(userDoc);
         navigateMain(`/profile/${userDoc.username}`)
     }
 

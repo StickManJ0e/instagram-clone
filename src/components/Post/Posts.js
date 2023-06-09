@@ -9,7 +9,7 @@ import PostOptions from "./PostOptions";
 import '../../styles/post/Posts.css'
 
 const Posts = (props) => {
-    const { setProfileUser, currentPosts, setCurrentPosts, setCurrentPopUp, postRef, postType } = props;
+    const { currentPosts, setCurrentPosts, setCurrentPopUp, postRef, postType } = props;
     const [key, setKey] = useState();
     const [endLoad, setEndLoad] = useState();
     let navigate = useNavigate();
@@ -167,7 +167,6 @@ const Posts = (props) => {
     }, []);
 
     const navProfile = (postUser) => {
-        setProfileUser(postUser);
         navigate(`profile/${postUser.username}`);
     }
 
