@@ -40,7 +40,7 @@ const PostOptions = (props) => {
     };
 
     const editPost = () => {
-        setCurrentPopUp(<PostEditMenu setCurrentPopUp={setCurrentPopUp} />)
+        setCurrentPopUp(<PostEditMenu setCurrentPopUp={setCurrentPopUp} currentPost={currentPost}/>)
     }
 
     //If post was created by the current user

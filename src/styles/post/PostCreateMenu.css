@@ -81,7 +81,7 @@
     align-items: center;
 }
 
-.post-main {
+.edit-post-div {
     display: flex;
     height: calc(100% - 42px);
     position: relative;
