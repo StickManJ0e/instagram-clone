@@ -16,13 +16,13 @@ const PostAddComment = (props) => {
     };
 
     const createComment = async (commentText) => {
-        const postRef = await addDoc(collection(firestore, 'posts', currentPost.docId, 'comments'), {
+        const postRef = await addDoc(collection(firestore, 'posts', currentPost.id, 'comments'), {
             uid: userDoc.uid,
             comment: commentText,
             timestamp: serverTimestamp(),
         });
 
-        await setDoc(doc(firestore, 'users', postUser.uid, 'posts', currentPost.docId, 'comments', postRef.id), {
+        await setDoc(doc(firestore, 'users', postUser.uid, 'posts', currentPost.id, 'comments', postRef.id), {
             uid: userDoc.uid,
             comment: commentText,
             timestamp: serverTimestamp(),

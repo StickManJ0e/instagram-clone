@@ -6,7 +6,7 @@ import '../../styles/post/PostLikeButton.css'
 
 const PostLikeButton = (props) => {
     const { loggedIn, userData, userDoc } = useAuthContext();
-    const { currentPost, postUser } = props;
+    const { currentPost } = props;
     const [liked, setLiked] = useState();
     const [likedHover, setLikedHover] = useState(false);
 
@@ -28,12 +28,12 @@ const PostLikeButton = (props) => {
     const likePost = async (usersRef, postRef) => {
         //Set Like in Users
         await setDoc(usersRef, {
-            uid: currentPost.docData.uid,
-            fileUrl: currentPost.docData.fileUrl,
-            storageUri: currentPost.docData.storageUri,
-            caption: currentPost.docData.caption,
-            aspectRatio: currentPost.docData.aspectRatio,
-            timestamp: currentPost.docData.timestamp,
+            uid: currentPost.uid,
+            fileUrl: currentPost.fileUrl,
+            storageUri: currentPost.storageUri,
+            caption: currentPost.caption,
+            aspectRatio: currentPost.aspectRatio,
+            timestamp: currentPost.timestamp,
         });
 
         //Set Like in Posts
@@ -47,8 +47,8 @@ const PostLikeButton = (props) => {
 
     const onLikeClick = async () => {
         try {
-            const usersRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
-            const postRef = doc(firestore, 'posts', currentPost.docId, 'liked', userData.uid);
+            const usersRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.id);
+            const postRef = doc(firestore, 'posts', currentPost.id, 'liked', userData.uid);
 
             if (liked === true) {
                 likePost(usersRef, postRef);
@@ -64,7 +64,7 @@ const PostLikeButton = (props) => {
     }
 
     const checkLiked = async () => {
-        const likedRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.docId);
+        const likedRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.id);
         const docSnap = await getDoc(query(likedRef));
         if (docSnap.exists()) {
             setLiked(true);

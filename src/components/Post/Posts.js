@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { firestore } from "../../firebase";
 import { collection, orderBy, getDocs, query, limit, startAfter, onSnapshot, getCountFromServer, doc, getDoc } from "firebase/firestore";
 import PostLikeButton from "./PostLikeButton";
-import PostMenu from "./PostMenu";
 import PostCommentsPreview from "./PostCommentsPreview";
 import PostOptions from "./PostOptions";
-import '../../styles/post/Posts.css'
+import PostComponent from "./PostComponent";
+import '../../styles/post/Posts.css';
 
 const Posts = (props) => {
     const { currentPosts, setCurrentPosts, setCurrentPopUp, postRef, postType } = props;
@@ -168,10 +168,22 @@ const Posts = (props) => {
 
     const navProfile = (postUser) => {
         navigate(`profile/${postUser.username}`);
-    }
+    };
 
     const onMoreOptionsClick = (post) => {
         setCurrentPopUp(<PostOptions setCurrentPopUp={setCurrentPopUp} currentPost={post} />)
+    };
+
+    const PostMenu = (props) => {
+        const { post } = props;
+
+        return (
+            <div id="post-menu-wrapper">
+                <div id="popup-backdrop" onClick={() => setCurrentPopUp()}></div>
+                <div id="exit-button" onClick={() => setCurrentPopUp()}>x</div>
+                <PostComponent currentPost={{ ...post.docData, id: post.docId }} postUser={post.postUser} />
+            </div >
+        )
     }
 
     if (postType === 'home') {
@@ -200,14 +212,12 @@ const Posts = (props) => {
                                 {/* Footer */}
                                 <div className="post-footer">
                                     <div className="post-action-bar">
-                                        <PostLikeButton currentPost={post} postUser={post.postUser} />
+                                        <PostLikeButton currentPost={{ ...post.docData, id: post.docId }} />
                                     </div>
                                     <div className="post-likes">{post.likeCount} Likes</div>
                                     <div className="post-caption"><p><span style={{ fontWeight: 700 }}>{post.postUser.displayName} </span>{post.docData.caption}</p></div>
                                     <div className="view-comments-button" onClick={() =>
-                                        setCurrentPopUp(<PostMenu
-                                            setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate}
-                                        />)}>View All Comments</div>
+                                        setCurrentPopUp(<PostMenu post={post} />)}>View All Comments</div>
                                     <PostCommentsPreview currentPost={post} postUser={post.postUser} />
                                 </div>
 

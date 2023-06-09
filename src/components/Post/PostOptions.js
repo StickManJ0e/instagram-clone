@@ -46,6 +46,7 @@ const PostOptions = (props) => {
     }
 
     const onGoToPost = () => {
+        setCurrentPopUp();
         navigate(`/post/${currentPost.docId}`);
     }
 
@@ -71,8 +72,7 @@ const PostOptions = (props) => {
                 <div id="popup-backdrop" onClick={() => exitPopup()}></div>
                 <div className="post-options-div">
                     <FollowButton profileUser={currentPost.postUser} />
-                    <div>Go to post</div>
-                    <div>Copy link</div>
+                    <div onClick={() => onGoToPost()}>Go to post</div>
                     <div onClick={() => exitPopup()}>Cancel</div>
                 </div>
             </div>

@@ -9,15 +9,14 @@ import { collection, where, getDocs, doc, query } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
 const Profile = (props) => {
-    // const { profileUser, setProfileUser } = props;
     const [profileUser, setProfileUser] = useState();
     const { loggedIn, userData, userDoc } = useAuthContext();
     const [currentPopUp, setCurrentPopUp] = useState();
     const [currentPosts, setCurrentPosts] = useState([]);
-    // const postRef = collection(firestore, 'users', profileUser.uid, 'posts');
     const [postRef, setPostRef] = useState();
     const { id } = useParams();
 
+    //Get profile data from id param
     const getProfile = async () => {
         const profileQuery = query(collection(firestore, "users"), where("username", "==", id));
         const querySnapshot = await getDocs(profileQuery);

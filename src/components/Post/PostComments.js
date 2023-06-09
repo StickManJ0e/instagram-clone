@@ -4,10 +4,10 @@ import { getDocs, query, orderBy, limit, collection, getDoc, doc, onSnapshot } f
 import '../../styles/post/PostComments.css';
 
 const PostComments = (props) => {
-    const { currentPost, postUser, getDate } = props;
+    const { currentPost, getDate } = props;
     const [currentComments, setCurrentComments] = useState([]);
     const [key, setKey] = useState();
-    const commentRef = collection(firestore, 'posts', currentPost.docId, 'comments');
+    const commentRef = collection(firestore, 'posts', currentPost.id, 'comments');
     let commentObject = (id, uid, comment, timestamp, commentUser) => {
         return { id, uid, comment, timestamp, commentUser };
     }
