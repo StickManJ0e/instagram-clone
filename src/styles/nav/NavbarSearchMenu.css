@@ -10,3 +10,19 @@
     flex-direction: column;
     z-index: 3;
 }
+
+.search-profile-picture {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.search-account {
+    display: flex;
+}
+
+.search-account:hover{
+    cursor: pointer;
+    background-color: var(--mode-background-color-hover);
+}

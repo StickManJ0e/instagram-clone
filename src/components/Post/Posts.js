@@ -167,7 +167,7 @@ const Posts = (props) => {
     }, []);
 
     const navProfile = (postUser) => {
-        navigate(`profile/${postUser.username}`);
+        navigate(`/profile/${postUser.username}`);
     };
 
     const onMoreOptionsClick = (post) => {

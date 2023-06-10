@@ -8,7 +8,7 @@
 - [x] Follow or unfollow people
 - [x] Show display name, username, # followers, # following, # posts, description, posts
     - [x] Have edit profile button
-- Can change username and password
+- [x] Can change username and password
 
 ### Posts 
 - [x] Make Image post with text.
@@ -20,6 +20,10 @@
 - [x] Comment on Posts.
 - Share Posts via messages.
 
+### Search
+- Search for other users and update results realtime
+    - Use `Firestore`
+
 ### Messaging
 - Message other users realtime
     - Use `Firestore`
@@ -30,12 +34,8 @@
     - Followed or messages by other users
         - Use `Firestore`
 
-### Search
-- Search for other users and update results realtime
-    - Use `Firestore`
-
 ### Settings
-- [x] Change username, password, email
+- [x] Change username, password
 - [x] Change profile picture, bio and display name
 
 ### Themes
