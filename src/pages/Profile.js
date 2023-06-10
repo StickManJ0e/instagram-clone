@@ -5,7 +5,7 @@ import Posts from "../components/Post/Posts";
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import '../styles/profile/Profile.css'
 import { firestore } from "../firebase";
-import { collection, where, getDocs, doc, query } from "firebase/firestore";
+import { collection, where, getDocs, query } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
 const Profile = (props) => {
@@ -14,6 +14,7 @@ const Profile = (props) => {
     const [currentPopUp, setCurrentPopUp] = useState();
     const [currentPosts, setCurrentPosts] = useState([]);
     const [postRef, setPostRef] = useState();
+    const [post, setPost] = useState();
     const { id } = useParams();
 
     //Get profile data from id param
@@ -36,7 +37,15 @@ const Profile = (props) => {
 
     useEffect(() => {
         getProfile();
-    }, []);
+        setCurrentPopUp();
+        setCurrentPosts([]);
+    }, [id]);
+
+    useEffect(() => {
+        if (postRef !== undefined) {
+            setPost(<Posts key={postRef.path} postType={'profile'} postRef={postRef} currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />)
+        }
+    }, [postRef])
 
     if (profileUser !== undefined && postRef !== undefined) {
         return (
@@ -45,13 +54,14 @@ const Profile = (props) => {
                 <div id="profile">
                     <ProfileHeader profileUser={profileUser} />
                     <div className="profile-posts">
-                        <Posts postType={'profile'} postRef={postRef} currentPosts={currentPosts} setCurrentPosts={setCurrentPosts} setCurrentPopUp={setCurrentPopUp} />
+                        {post}
                     </div>
                 </div>
                 {currentPopUp}
             </div>
         );
     }
+
 };
 
 export default Profile;

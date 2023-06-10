@@ -15,7 +15,7 @@ const ProfileHeader = (props) => {
 
     //Get number of posts, followers and following and set respective states
     const getCounts = async () => {
-        const postSnapshot = await getCountFromServer(collection(firestore, 'users', profileUser.uid, 'liked'));
+        const postSnapshot = await getCountFromServer(collection(firestore, 'users', profileUser.uid, 'posts'));
         setPostCount(postSnapshot.data().count);
 
         const followerSnapshot = await getCountFromServer(collection(firestore, 'users', profileUser.uid, 'followers'));
