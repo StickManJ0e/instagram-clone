@@ -26,13 +26,18 @@ const NavbarSearchMenu = (props) => {
 
     const onSearch = async (e) => {
         const searchValue = e.target.value;
+        //If searchresult empty, return empty results
+        if (searchValue === '') {
+            setResultAccounts();
+            return;
+        };
+
         const searchQuery = query(collection(firestore, "users"), where('username', '>=', searchValue), where('username', '<=', searchValue + '\uf8ff'), limit(10));
         const querySnapshot = await getDocs(searchQuery);
         let queryArray = [];
         querySnapshot.forEach((document) => {
             queryArray.push({ ...document.data(), id: document.id });
             setResultAccounts(queryArray);
-            console.log(queryArray);
         });
     };
 

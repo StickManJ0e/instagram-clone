@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../../styles/nav/Navbar.css';
 import PostCreateMenu from "../Post/PostCreateMenu";
@@ -9,7 +9,7 @@ import NavbarNotificationsMenu from "./NavbarNotificationsMenu";
 import InstagramLogo from "../Misc/instagram-logo";
 
 const Navbar = (props) => {
-    const { setCurrentPopUp } = props;
+    const { setCurrentPopUp, styling } = props;
     const [NavbarMorePopup, setNavbarMorePopup] = useState();
     const [NavbarPopup, setNavbarPopup] = useState();
     const [navbarStyling, setNavbarStyling] = useState();
@@ -51,6 +51,12 @@ const Navbar = (props) => {
             setNavbarPopup();
         }
     }
+
+    useEffect(() => {
+        if (styling !== undefined) {
+            setNavbarStyling(styling);
+        }
+    }, [styling])
 
     return (
         <div id="navbar" style={navbarStyling}>

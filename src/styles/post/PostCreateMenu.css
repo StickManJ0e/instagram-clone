@@ -112,7 +112,6 @@
 #resize-options {
     overflow: hidden;
     border: none;
-    /* display: none; */
     display: flex;
     flex-direction: column;
 }
