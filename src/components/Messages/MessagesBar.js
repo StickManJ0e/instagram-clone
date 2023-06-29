@@ -13,12 +13,21 @@ const MessagesBar = (props) => {
     const onChange = (e) => {
         let textValue = e.target.textContent;
         setMessageContent(textValue);
+
         if (textValue !== '') {
             setSendButton(<div id="send-button" onClick={() => onSendMessage()}>Send</div>);
         } else {
             setSendButton();
         };
     };
+
+    const onDown = (e) => {
+        let textValue = e.target.textContent;
+
+        if (textValue.length >= 1000) {
+            e.preventDefault();
+        }
+    }
 
     const addMessageDoc = async (profileConversationRef) => {
         const messageRef = await addDoc(profileConversationRef, {
@@ -58,7 +67,7 @@ const MessagesBar = (props) => {
     return (
         <div id="message-bar-wrapper">
             <div id="message-bar">
-                <p class="textarea" role="textbox" contentEditable="true" onKeyUp={(e) => onChange(e)}></p>
+                <p class="textarea" role="textbox" contentEditable="true" maxlength="1000" onKeyDown={(e) => onDown(e)} onKeyUp={(e) => onChange(e)}></p>
                 {sendButton}
             </div>
         </div >

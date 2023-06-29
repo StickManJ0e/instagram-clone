@@ -47,7 +47,7 @@ const MessagesSidebar = (props) => {
 
     return (
         <div id="messages-sidebar">
-            <div class="header">
+            <div className="header">
                 <div>{userDoc.username}</div>
                 <div onClick={() => onNewMessage()}>
                     <svg aria-label="New message" className="new-message-icon" color="var(--mode-text-color)" fill="var(--mode-text-color)" height={24} role="img" viewBox="0 0 24 24" width={24}>
@@ -58,11 +58,11 @@ const MessagesSidebar = (props) => {
                     </svg>
                 </div>
             </div>
-            <div class="main">
+            <div className="main">
                 <div id="sidebar-profiles">
                     {(conversations !== undefined) ? conversations.map((conversation) => {
                         return (
-                            <div key={conversation.id} className="messages-sidebar-profile" onClick={() => navigateToMessage(conversation)}>
+                            <div key={conversation.uid} className="messages-sidebar-profile" onClick={() => navigateToMessage(conversation)}>
                                 <img className="messages-profile-picture" src={conversation.photoUrl} alt="profile" />
                                 <div>{conversation.username}</div>
                             </div>

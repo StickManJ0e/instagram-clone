@@ -16,8 +16,8 @@ const Posts = (props) => {
     let postObject = (docId, docData, postUser, likeCount) => {
         return {
             docId, docData, postUser, likeCount
-        }
-    }
+        };
+    };
 
     //Set Current Posts on Doc Fetch for Start and Fetch Queries
     const setQueryData = async (newArray, document) => {
