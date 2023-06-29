@@ -5,11 +5,10 @@ import { firestore } from "../../firebase";
 import { useLocation } from "react-router-dom";
 
 const MessagesConversation = (props) => {
-    const { profile } = props;
+    const { setEndLoad, profile } = props;
     const { loggedIn, userData, userDoc } = useAuthContext();
     const [currentMessages, setCurrentMessages] = useState([]);
     const [key, setKey] = useState();
-    const [endLoad, setEndLoad] = useState();
     const messageRef = collection(firestore, "users", userDoc.uid, "messages", profile.uid, 'conversation');
     const bottomRef = useRef(null);
 
@@ -55,9 +54,10 @@ const MessagesConversation = (props) => {
         queryListener();
         console.log('load more');
         const snapShotCount = await getCountFromServer(messageRef);
-        if ((snapShotCount.data().count - currentMessages.length) === 0) {
-            setEndLoad(<div>Reached End</div>);
-        } else {
+        if ((snapShotCount.data().count - currentMessages.length) < 20) {
+            setEndLoad(true);
+        } 
+        if ((snapShotCount.data().count - currentMessages.length) !== 0) {
             const querySnapshot = await getDocs(query(messageRef, orderBy('timestamp', 'desc'), startAfter(key), limit(20)));
             let newArray = currentMessages;
 
@@ -75,30 +75,39 @@ const MessagesConversation = (props) => {
         if ((mainDiv.scrollTop + mainDiv.offsetHeight) === mainDiv.offsetHeight) {
             let button = document.querySelector('#load-more');
             button.click();
+        };
+    };
+
+    const onRender = async () => {
+        const snapShotCount = await getCountFromServer(messageRef);
+        if (snapShotCount.data().count < 20) {
+            setEndLoad(true);
+        } else {
+            setEndLoad(false);
         }
     }
 
     useEffect(() => {
-        setKey();
-        setEndLoad();
-        setCurrentMessages([]);
-        queryListener();
-
         const mainDiv = document.querySelector('#messages-area > .main');
         mainDiv.addEventListener('scroll', handleScroll);
-        // mainDiv.scrollTo(0, mainDiv.scrollHeight);
         setTimeout(() => bottomRef.current?.scrollIntoView(), 100);
 
         return () => {
             mainDiv.removeEventListener('scroll', handleScroll);
-            renderFirst();
-            mainDiv.scrollTo(0, mainDiv.scrollHeight);
         }
     }, []);
 
+    useEffect(() => {
+        setKey();
+        onRender();
+        setCurrentMessages([]);
+        queryListener();
+        setTimeout(() => bottomRef.current?.scrollIntoView(), 100);
+        renderFirst();
+    }, [profile])
+
     return (
         <div className="conversation">
-            {endLoad}
             {(currentMessages) ? currentMessages.map((message) => {
                 if (message.senderUid === userDoc.uid) {
                     return (

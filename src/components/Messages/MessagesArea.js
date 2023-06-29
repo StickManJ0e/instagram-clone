@@ -9,6 +9,7 @@ import MessagesConversation from "./MessagesConversation";
 const MessagesArea = (props) => {
     const { setCurrentPopUp, id } = props;
     const [profile, setProfile] = useState();
+    const [endLoad, setEndLoad] = useState(false);
     const navigate = useNavigate();
 
     const onNewMessage = () => {
@@ -50,13 +51,14 @@ const MessagesArea = (props) => {
                     <div>{profile.username}</div>
                 </div>
                 <div className="main">
-                    <div className="profile">
-                        <img className="messages-profile-picture" src={profile.photoUrl} alt="profile" />
-                        <div>{profile.displayName}</div>
-                        <div className="username">{profile.username} · Instagram</div>
-                        <div className="button" onClick={() => onProfileClick(profile)}>View Profile</div>
-                    </div>
-                    <MessagesConversation profile={profile}/>
+                    {endLoad ?
+                        <div className="profile">
+                            <img className="messages-profile-picture" src={profile.photoUrl} alt="profile" />
+                            <div>{profile.displayName}</div>
+                            <div className="username">{profile.username} · Instagram</div>
+                            <div className="button" onClick={() => onProfileClick(profile)}>View Profile</div>
+                        </div> : ''}
+                    <MessagesConversation setEndLoad={setEndLoad} profile={profile} />
                 </div>
                 <MessagesBar profile={profile} />
             </div>
