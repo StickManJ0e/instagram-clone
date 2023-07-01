@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import '../../styles/nav/NavbarNotificationsMenu.css'
+import '../../styles/nav/NavbarNotificationsMenu.css';
+import Notifications from "../Notifications/Notifications";
 
 const NavbarNotificationsMenu = (props) => {
     const { setNavbarPopup, setNavbarStyling } = props;
@@ -31,7 +32,7 @@ const NavbarNotificationsMenu = (props) => {
 
     return (
         <div id='notifications-menu-wrapper'>
-            Notifications
+            <Notifications />
         </div>
     );
 };

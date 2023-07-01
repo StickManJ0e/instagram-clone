@@ -7,6 +7,7 @@ import NavbarMoreMenu from "./NavbarMoreMenu";
 import NavbarSearchMenu from "./NavbarSearchMenu";
 import NavbarNotificationsMenu from "./NavbarNotificationsMenu";
 import InstagramLogo from "../Misc/instagram-logo";
+import NotifcationsButton from "../Notifications/NotificationsButton";
 
 const Navbar = (props) => {
     const { setCurrentPopUp, styling } = props;
@@ -62,13 +63,13 @@ const Navbar = (props) => {
         <div id="navbar" style={navbarStyling}>
             {NavbarPopup}
             <div id="logo-div">
-                <InstagramLogo height={29} width={103}/>
+                <InstagramLogo height={29} width={103} />
             </div>
             <div id="navbar-buttons-div">
                 <div onClick={() => navigateMain('/')}>Home</div>
                 <div id="search-button" onClick={() => onSearchClick()}>Search</div>
                 <div onClick={() => navigateMain('/messages')}>Messages</div>
-                <div id='notifications-button' onClick={() => onNotificationsClick()}>Notifcations</div>
+                <NotifcationsButton NavbarPopup={NavbarPopup} setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling}/>
                 <div onClick={() => onCreateClick()}>Create</div>
                 <div onClick={() => navigateProfile()}>Profile</div>
             </div>

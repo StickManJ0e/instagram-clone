@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { getDocs, query, orderBy, limit, collection, onSnapshot, getCountFromServer, startAfter } from "firebase/firestore";
 import { useAuthContext } from "../../context/AuthContext";
 import { firestore } from "../../firebase";
-import { useLocation } from "react-router-dom";
 
 const MessagesConversation = (props) => {
     const { setEndLoad, profile } = props;
@@ -52,7 +51,6 @@ const MessagesConversation = (props) => {
 
     const loadMore = async () => {
         queryListener();
-        console.log('load more');
         const snapShotCount = await getCountFromServer(messageRef);
         if ((snapShotCount.data().count - currentMessages.length) < 20) {
             setEndLoad(true);
