@@ -21,17 +21,17 @@
 - Share Posts via messages.
 
 ### Search
-- Search for other users and update results realtime
+- [x] Search for other users and update results realtime
     - Use `Firestore`
 
 ### Messaging
-- Message other users realtime
+-[x]  Message other users realtime
     - Use `Firestore`
 
 ### Notifications
 - Get notifications if:
-    - Posts liked, commented
-    - Followed or messages by other users
+    - [x] Posts liked, commented
+    - [x] Followed or messaged by other users
         - Use `Firestore`
 
 ### Settings

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
 import { firestore } from "../../firebase";
-import { doc, setDoc, getDoc, query, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, query, deleteDoc, serverTimestamp, collection, addDoc } from "firebase/firestore";
 
 const FollowButton = (props) => {
     const { profileUser } = props;
@@ -10,6 +10,7 @@ const FollowButton = (props) => {
 
     const usersRef = doc(firestore, 'users', userData.uid, 'following', profileUser.uid);
     const profileRef = doc(firestore, 'users', profileUser.uid, 'followers', userData.uid);
+    const notificationsRef = doc(firestore, 'users', profileUser.uid, 'notifications', profileUser.uid);
 
     //Check if user is following the account
     const checkFollowing = async () => {
@@ -25,12 +26,39 @@ const FollowButton = (props) => {
     const followProfile = async () => {
         await setDoc(usersRef, profileUser);
         await setDoc(profileRef, userDoc);
+        if (checkNotified() === false) {
+            sendFollowNotifictaion();
+        }
     };
 
     //Unfollow Account
     const unFollowProfile = async () => {
         await deleteDoc(usersRef);
         await deleteDoc(profileRef);
+    };
+
+    //Send notification
+    const sendFollowNotifictaion = async () => {
+        const NotificationsObject = (type, document, documentId, timestamp, read) => {
+            return {
+                type,
+                document,
+                documentId,
+                timestamp,
+                read,
+            };
+        };
+        const object = NotificationsObject('follower', userDoc, userDoc.uid, serverTimestamp(), false);
+        await setDoc(notificationsRef, object);
+    };
+
+    const checkNotified = async () => {
+        const docSnap = await getDoc(notificationsRef);
+        if (docSnap.exists()) {
+            return true;
+        } else {
+            return false;
+        };
     };
 
     //Check whether user is following account and then follow

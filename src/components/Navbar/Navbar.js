@@ -5,14 +5,14 @@ import PostCreateMenu from "../Post/PostCreateMenu";
 import { useAuthContext } from "../../context/AuthContext";
 import NavbarMoreMenu from "./NavbarMoreMenu";
 import NavbarSearchMenu from "./NavbarSearchMenu";
-import NavbarNotificationsMenu from "./NavbarNotificationsMenu";
 import InstagramLogo from "../Misc/instagram-logo";
-import NotifcationsButton from "../Notifications/NotificationsButton";
+import NavbarNotificationsMenu from "../Navbar/NavbarNotificationsMenu";
 
 const Navbar = (props) => {
     const { setCurrentPopUp, styling } = props;
     const [NavbarMorePopup, setNavbarMorePopup] = useState();
     const [NavbarPopup, setNavbarPopup] = useState();
+    const [currentNotifications, setCurrentNotifications] = useState([]);
     const [navbarStyling, setNavbarStyling] = useState();
     const { loggedIn, userData, userDoc } = useAuthContext();
     let navigate = useNavigate();
@@ -45,9 +45,10 @@ const Navbar = (props) => {
         }
     }
 
+    //Open and close notifcations menu on click
     const onNotificationsClick = () => {
         if (NavbarPopup === undefined) {
-            setNavbarPopup(<NavbarNotificationsMenu setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} />);
+            setNavbarPopup(<NavbarNotificationsMenu setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} setCurrentNotifications={setCurrentNotifications} currentNotifications={currentNotifications} />);
         } else {
             setNavbarPopup();
         }
@@ -69,7 +70,8 @@ const Navbar = (props) => {
                 <div onClick={() => navigateMain('/')}>Home</div>
                 <div id="search-button" onClick={() => onSearchClick()}>Search</div>
                 <div onClick={() => navigateMain('/messages')}>Messages</div>
-                <NotifcationsButton NavbarPopup={NavbarPopup} setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling}/>
+                <div id='notifications-button' onClick={() => onNotificationsClick()}>Notifcations</div>
+                {/* <NotifcationsButton NavbarPopup={NavbarPopup} setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} /> */}
                 <div onClick={() => onCreateClick()}>Create</div>
                 <div onClick={() => navigateProfile()}>Profile</div>
             </div>

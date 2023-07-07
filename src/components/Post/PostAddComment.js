@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase";
-import { setDoc, doc, serverTimestamp, collection, addDoc, updateDoc } from "firebase/firestore";
+import { setDoc, doc, serverTimestamp, collection, addDoc, getDoc, query } from "firebase/firestore";
 import { useAuthContext } from "../../context/AuthContext";
 
 const PostAddComment = (props) => {
@@ -11,22 +11,38 @@ const PostAddComment = (props) => {
     const onPost = (e) => {
         e.preventDefault();
         let commentText = e.target.comment.value;
-        createComment(commentText);
+        const commentObject = {
+            uid: userDoc.uid,
+            comment: commentText,
+            timestamp: serverTimestamp(),
+        };
+        createComment(commentObject);
         e.target.reset();
     };
 
-    const createComment = async (commentText) => {
-        const postRef = await addDoc(collection(firestore, 'posts', currentPost.id, 'comments'), {
-            uid: userDoc.uid,
-            comment: commentText,
-            timestamp: serverTimestamp(),
-        });
+    //Send notification
+    const sendCommentNotifictaion = async (commentObject, id) => {
+        const notificationsRef = doc(firestore, 'users', currentPost.uid, 'notifications', id);
+        const docSnap = await getDoc(query(notificationsRef));
+        if (docSnap.exists() === false) {
+            const NotificationsObject = (type, document, documentId, timestamp, read) => {
+                return {
+                    type,
+                    document,
+                    documentId,
+                    timestamp,
+                    read,
+                };
+            };
+            const object = NotificationsObject('comment', commentObject, id, serverTimestamp(), false);
+            await setDoc(notificationsRef, object);
+        }
+    };
 
-        await setDoc(doc(firestore, 'users', postUser.uid, 'posts', currentPost.id, 'comments', postRef.id), {
-            uid: userDoc.uid,
-            comment: commentText,
-            timestamp: serverTimestamp(),
-        });
+    const createComment = async (commentObject) => {
+        const postRef = await addDoc(collection(firestore, 'posts', currentPost.id, 'comments'), commentObject);
+        await setDoc(doc(firestore, 'users', postUser.uid, 'posts', currentPost.id, 'comments', postRef.id), commentObject);
+        sendCommentNotifictaion(commentObject, postRef.id);
     }
 
     const onInputEdit = (e) => {

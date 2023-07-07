@@ -3,7 +3,7 @@ import '../../styles/nav/NavbarNotificationsMenu.css';
 import Notifications from "../Notifications/Notifications";
 
 const NavbarNotificationsMenu = (props) => {
-    const { setNavbarPopup, setNavbarStyling } = props;
+    const { setNavbarPopup, setNavbarStyling, currentNotifications, setCurrentNotifications } = props;
 
     const addNavbarStyling = () => {
         setNavbarStyling({
@@ -32,7 +32,7 @@ const NavbarNotificationsMenu = (props) => {
 
     return (
         <div id='notifications-menu-wrapper'>
-            <Notifications />
+            <Notifications setCurrentNotifications={setCurrentNotifications} currentNotifications={currentNotifications} />
         </div>
     );
 };

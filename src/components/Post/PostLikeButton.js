@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "../../firebase";
-import { setDoc, doc, deleteDoc, getDoc, query } from "firebase/firestore";
+import { setDoc, doc, deleteDoc, getDoc, query, serverTimestamp } from "firebase/firestore";
 import { useAuthContext } from "../../context/AuthContext";
 import '../../styles/post/PostLikeButton.css'
 
@@ -45,6 +45,35 @@ const PostLikeButton = (props) => {
         await deleteDoc(postRef);
     }
 
+    //Send like notification
+    const sendLikeNotifictaion = async () => {
+        //Check if doc exists 
+        const notificationsRef = doc(firestore, 'users', currentPost.uid, 'notifications', currentPost.id);
+        const docSnap = await getDoc(notificationsRef);
+        if (docSnap.exists() === false) {
+            const NotificationsObject = (type, document, documentId, timestamp, read) => {
+                return {
+                    type,
+                    document,
+                    documentId,
+                    timestamp,
+                    read,
+                };
+            };
+
+            const Document = (post, profile) => {
+                return {
+                    post,
+                    profile,
+                };
+            };
+
+            const document = Document(currentPost, userDoc);
+            const object = NotificationsObject('liked', document, currentPost.id, serverTimestamp(), false);
+            await setDoc(notificationsRef, object);
+        }
+    };
+
     const onLikeClick = async () => {
         try {
             const usersRef = doc(firestore, 'users', userData.uid, 'liked', currentPost.id);
@@ -52,6 +81,8 @@ const PostLikeButton = (props) => {
 
             if (liked === true) {
                 likePost(usersRef, postRef);
+                sendLikeNotifictaion();
+
             }
             if (liked === false) {
                 unlikePost(usersRef, postRef);
