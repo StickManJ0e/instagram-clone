@@ -1,0 +1,9 @@
+#notificatins-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-div {
+    display: flex;
+    flex-direction: row;
+}

@@ -31,7 +31,7 @@
 ### Notifications
 - Get notifications if:
     - [x] Posts liked, commented
-    - [x] Followed or messaged by other users
+    - [x] Followed by other users
         - Use `Firestore`
 
 ### Settings

@@ -34,7 +34,14 @@ const PostAddComment = (props) => {
                     read,
                 };
             };
-            const object = NotificationsObject('comment', commentObject, id, serverTimestamp(), false);
+            const DocumentObject = (comment, profile) => {
+                return{
+                    comment,
+                    profile,
+                }
+            }
+            const document = DocumentObject(commentObject, userDoc)
+            const object = NotificationsObject('comment', document, id, serverTimestamp(), false);
             await setDoc(notificationsRef, object);
         }
     };

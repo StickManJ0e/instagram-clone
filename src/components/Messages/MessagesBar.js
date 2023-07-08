@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { addDoc, collection, setDoc, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, setDoc, doc } from "firebase/firestore";
 import { firestore } from "../../firebase";
 import { serverTimestamp } from "firebase/firestore";
 import { useAuthContext } from "../../context/AuthContext";
@@ -41,36 +41,15 @@ const MessagesBar = (props) => {
 
         //Add to user collection
         const messageRef = await addDoc(profileConversationRef, messageObject);
-        const id = messageRef.id;
 
         //Add to other profile collection
         const userConversationRef = doc(firestore, 'users', profile.uid, 'messages', userDoc.uid, 'conversation', messageRef.id);
         await setDoc(userConversationRef, messageObject);
 
-        sendMessageNotification(messageObject, messageRef.id);
     };
 
     const updateProfileDoc = async (ref, profile) => {
         await setDoc(ref, { ...profile, lastModified: serverTimestamp() });
-    };
-
-    const sendMessageNotification = async (messageObject, id) => {
-        const notificationsRef = doc(firestore, 'users', profile.uid, 'notifications', id);
-        const docSnap = await getDoc(notificationsRef);
-
-        if (docSnap.exists() === false) {
-            const NotificationsObject = (type, document, documentId, timestamp, read) => {
-                return {
-                    type,
-                    document,
-                    documentId,
-                    timestamp,
-                    read,
-                };
-            };
-            const object = NotificationsObject('message', messageObject, id, serverTimestamp(), false);
-            await setDoc(notificationsRef, object);
-        }
     };
 
     const onSendMessage = async () => {

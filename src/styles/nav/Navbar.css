@@ -56,6 +56,10 @@ a {
     z-index: 4;
 }
 
+#notifications-button.not-read {
+    color: red;
+}
+
 @media screen and (max-width: 850px) {
     #navbar {
         width: var(--navbar-narrow-width);

@@ -7,14 +7,16 @@ import NavbarMoreMenu from "./NavbarMoreMenu";
 import NavbarSearchMenu from "./NavbarSearchMenu";
 import InstagramLogo from "../Misc/instagram-logo";
 import NavbarNotificationsMenu from "../Navbar/NavbarNotificationsMenu";
+import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
+import { firestore } from "../../firebase";
 
 const Navbar = (props) => {
     const { setCurrentPopUp, styling } = props;
     const [NavbarMorePopup, setNavbarMorePopup] = useState();
     const [NavbarPopup, setNavbarPopup] = useState();
-    const [currentNotifications, setCurrentNotifications] = useState([]);
     const [navbarStyling, setNavbarStyling] = useState();
     const { loggedIn, userData, userDoc } = useAuthContext();
+    const [read, setRead] = useState(true);
     let navigate = useNavigate();
 
     const navigateMain = (path) => {
@@ -47,18 +49,49 @@ const Navbar = (props) => {
 
     //Open and close notifcations menu on click
     const onNotificationsClick = () => {
+        setRead(true);
         if (NavbarPopup === undefined) {
-            setNavbarPopup(<NavbarNotificationsMenu setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} setCurrentNotifications={setCurrentNotifications} currentNotifications={currentNotifications} />);
+            setNavbarPopup(<NavbarNotificationsMenu setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} />);
+            readNotifications();
         } else {
             setNavbarPopup();
-        }
+        };
+    };
+
+    //Check if notification is read
+    const checkNotificationsRead = async () => {
+        const notificationRef = collection(firestore, "users", userDoc.uid, "notifications");
+        const notifcationQuery = query(notificationRef, where("read", "==", false));
+        const notificatonSnapshot = await getDocs(notifcationQuery);
+        notificatonSnapshot.forEach((document) => {
+            if (document.exists()) {
+                setRead(false);
+                console.log(false);
+            };
+        });
+    };
+
+    const readNotifications = async () => {
+        const notificationRef = collection(firestore, "users", userDoc.uid, "notifications");
+        const notifcationQuery = query(notificationRef, where("read", "==", false));
+        const notificatonSnapshot = await getDocs(notifcationQuery);
+        notificatonSnapshot.forEach(async (document) => {
+            const ref = doc(firestore, "users", userDoc.uid, "notifications", document.id);
+            await updateDoc(ref, {
+                read: true,
+            });
+        });
     }
 
     useEffect(() => {
         if (styling !== undefined) {
             setNavbarStyling(styling);
         }
-    }, [styling])
+    }, [styling]);
+
+    useEffect(() => {
+        checkNotificationsRead();
+    })
 
     return (
         <div id="navbar" style={navbarStyling}>
@@ -70,8 +103,8 @@ const Navbar = (props) => {
                 <div onClick={() => navigateMain('/')}>Home</div>
                 <div id="search-button" onClick={() => onSearchClick()}>Search</div>
                 <div onClick={() => navigateMain('/messages')}>Messages</div>
-                <div id='notifications-button' onClick={() => onNotificationsClick()}>Notifcations</div>
-                {/* <NotifcationsButton NavbarPopup={NavbarPopup} setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} /> */}
+                {read ? <div id='notifications-button' className="read" onClick={() => onNotificationsClick()}>Notifcations</div>
+                    : <div id='notifications-button' className="not-read" onClick={() => onNotificationsClick()}>Notifcations</div>}
                 <div onClick={() => onCreateClick()}>Create</div>
                 <div onClick={() => navigateProfile()}>Profile</div>
             </div>
