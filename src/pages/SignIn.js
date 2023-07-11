@@ -40,7 +40,7 @@ const SignIn = () => {
         <div className="main-sign-in main">
             {redirectHome}
             <div className="sign-in-div">
-                <div>
+                <div id="sign-up-logo">
                     <InstagramLogo height="51px" width="175px" />
                 </div>
                 <form className="sign-in-form" onSubmit={(e) => signInOnSubmit(e)}>
@@ -50,9 +50,14 @@ const SignIn = () => {
                     <label htmlFor="password"></label>
                     <input type="password" name="passwrod" id="password" placeholder="Password" required></input>
 
-                    <button type="submit">Log in</button>
+                    <button id="submit" type="submit">Log in</button>
                 </form>
-                <button onClick={() => signInWithGoogle()}>Log in with Google</button>
+                <div className="or-div">
+                    <div className="or-border"></div>
+                    <div className="or-text">OR</div>
+                    <div className="or-border"></div>
+                </div>
+                <button id="google-sign-in" onClick={() => signInWithGoogle()}>Log in with Google</button>
             </div>
             <div className="sign-up redirect-div">
                 <p>Don't have an account?</p>

@@ -51,7 +51,7 @@ const Navbar = (props) => {
     const onNotificationsClick = () => {
         setRead(true);
         if (NavbarPopup === undefined) {
-            setNavbarPopup(<NavbarNotificationsMenu setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} />);
+            setNavbarPopup(<NavbarNotificationsMenu setNavbarPopup={setNavbarPopup} setNavbarStyling={setNavbarStyling} setRead={setRead}/>);
             readNotifications();
         } else {
             setNavbarPopup();
