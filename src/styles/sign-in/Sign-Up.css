@@ -1,5 +1,59 @@
 #sign-up-form {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.sign-up.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  gap: 12px;
+}
+
+.sign-up-div {
+  width: fit-content;
+  height: fit-content;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.sign-up-div.email-password>#google-sign-in {
+  margin: 6px 40px;
+}
+
+#sign-up-subheading {
+  color: rgb(115, 115, 115);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0 40px 10px;
+  text-align: center;
+  width: 268px;
+}
+
+#sign-up-form>#submit {
+  margin-bottom: 36px;
+}
+
+.username-input-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.username-input-div>#username {
+  margin: 0;
+}
+
+#username-form {
+  margin: 8px 40px;
+}

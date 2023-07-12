@@ -32,7 +32,9 @@
 }
 
 #email,
-#password {
+#password,
+#username,
+#confirm-password {
     margin: 0 40px 6px;
     height: 38px;
     width: 268px;
@@ -62,14 +64,25 @@
 
 #google-sign-in {
     margin-bottom: 36px;
-    border: none;
+    border: 1px solid rgb(219, 219, 219);
     background-color: var(--mode-background-color);
     font-size: 15px;
     font-weight: 500;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 #google-sign-in:hover {
     cursor: pointer;
+    background-color: var(--mode-background-color-hover);
+}
+
+#google-logo {
+    width: 16px;
+    height: 16px;
 }
 
 .or-border {
@@ -97,7 +110,7 @@ input::placeholder {
     padding-left: 5px;
 }
 
-.sign-up.redirect-div {
+.redirect-div {
     border: 1px solid rgb(219, 219, 219);
     display: flex;
     flex-direction: row;
@@ -108,7 +121,7 @@ input::placeholder {
     padding: 0 40px 6px;
 }
 
-.sign-up.redirect-div>a {
+.redirect-div>a {
     color: rgb(0, 149, 246);
     font-weight: 600;
 }

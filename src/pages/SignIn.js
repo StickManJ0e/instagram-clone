@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
-import InstagramLogo from '../components/Misc/instagram-logo'
+import InstagramLogo from '../components/Misc/instagram-logo';
 import '../styles/sign-in/Sign-In.css';
+import GoogleLogo from '../assets/misc/google-logo.png';
 
 const SignIn = () => {
     const [redirectHome, setRedirectHome] = useState();
@@ -57,7 +58,9 @@ const SignIn = () => {
                     <div className="or-text">OR</div>
                     <div className="or-border"></div>
                 </div>
-                <button id="google-sign-in" onClick={() => signInWithGoogle()}>Log in with Google</button>
+                <button id="google-sign-in" onClick={() => signInWithGoogle()}>
+                    <img id="google-logo" src={GoogleLogo} alt="google-logo"></img> Log in with Google
+                </button>
             </div>
             <div className="sign-up redirect-div">
                 <p>Don't have an account?</p>

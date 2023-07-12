@@ -13,6 +13,8 @@ import {
 import { setDoc, doc, serverTimestamp, collection, getDocs, query } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import '../styles/sign-in/Sign-Up.css';
+import GoogleLogo from '../assets/misc/google-logo.png';
+import InstagramLogo from "../components/Misc/instagram-logo";
 
 const SignUp = () => {
     const [user, setUser] = useState();
@@ -136,12 +138,23 @@ const SignUp = () => {
                             <label htmlFor="username"></label>
                             <input type="text" name="username" id="username" placeholder="Username" onKeyUp={(e) => checkUsernameTaken(e)} required></input>
                         </div>
-                        <button type="submit">Sign Up</button>
+                        <button id="submit" type="submit">Sign Up</button>
                     </form>
                 </div> :
                 signUpMethod === 'EmailAndPassword' ?
                     <div className="sign-up-div email-password">
-                        <button onClick={() => onLogInWithGoogle()}>Log in with Google</button>
+                        <div id="sign-up-logo">
+                            <InstagramLogo height="51px" width="175px" />
+                        </div>
+                        <div id="sign-up-subheading">Sign up to see photos and videos from your friends.</div>
+                        <button id="google-sign-in" onClick={() => onLogInWithGoogle()}>
+                            <img id="google-logo" src={GoogleLogo} alt="google-logo"></img> Log in with Google
+                        </button>
+                        <div className="or-div">
+                            <div className="or-border"></div>
+                            <div className="or-text">OR</div>
+                            <div className="or-border"></div>
+                        </div>
                         <form id="sign-up-form" onSubmit={(e) => onFormSubmit(e)}>
                             <label htmlFor="email"></label>
                             <input type="email" name="email" id="email" placeholder="Email" required></input>
@@ -155,7 +168,7 @@ const SignUp = () => {
                             <label htmlFor="confirm-password"></label>
                             <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" onKeyUp={(e) => confirmPassword(e)} required></input>
 
-                            <button type="submit">Sign Up</button>
+                            <button id="submit" type="submit">Sign Up</button>
                         </form>
                     </div> :
                     <Navigate to='/' />}
