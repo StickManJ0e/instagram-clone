@@ -243,8 +243,9 @@ const Posts = (props) => {
                         return (
                             <div className="post-div" key={post.docId} id={post.docId} >
                                 {/* Image */}
-                                <div onClick={() => setCurrentPopUp(<PostMenu setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate} />)}>Hi</div>
-                                <img className="post-image" src={post.docData.fileUrl} alt="post" style={getAspectRatio(post.docData.aspectRatio)}></img>
+                                <div class="profile-post" onClick={() => setCurrentPopUp(<PostMenu setCurrentPopUp={setCurrentPopUp} post={post} getAspectRatio={getAspectRatio} getDate={getDate} />)}>
+                                    <img className="post-image" src={post.docData.fileUrl} alt="post" style={getAspectRatio(post.docData.aspectRatio)}></img>
+                                </div>
                             </div>
                         )
                     })

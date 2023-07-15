@@ -63,6 +63,7 @@
 .post-menu-div>.image-container>img {
     width: 100%;
     height: auto;
+    max-height: 100%;
 }
 
 .post-menu.post-header {
@@ -121,7 +122,6 @@
 .post-messages-div::-webkit-scrollbar {
     width: 0px;
     background: transparent;
-    /* make scrollbar transparent */
 }
 
 .post-comments-div {
@@ -132,4 +132,32 @@
 
 .post-comment-preview>p {
     margin: 0;
+}
+
+#post-wrapper>.post-menu-div.post-menu {
+    display: flex;
+    position: relative;
+    background-color: white;
+    width: clamp(688px, min(calc(100% - 40px), 75%), 975px);
+    height: clamp(450px, max(calc(100vw - 75%), 50%), 450px);
+    width: fit-content;
+    margin: 0;
+    border: 1px solid rgb(219, 219, 219);
+}
+
+#post-wrapper {
+    display: flex;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+#post-page-wrapper {
+    display: flex;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    gap: 0;
 }

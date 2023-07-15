@@ -38,7 +38,9 @@ const Post = (props) => {
         return (
             <div id="post-wrapper">
                 <Navbar setCurrentPopUp={setCurrentPopUp} />
-                <PostComponent currentPost={currentPost} postUser={postUser} />
+                <div id="post-page-wrapper">
+                    <PostComponent currentPost={currentPost} postUser={postUser} />
+                </div>
             </div>
         );
     };

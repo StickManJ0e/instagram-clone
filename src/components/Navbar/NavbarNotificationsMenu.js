@@ -8,7 +8,9 @@ const NavbarNotificationsMenu = (props) => {
     const addNavbarStyling = () => {
         setNavbarStyling({
             width: 'var(--navbar-narrow-width)',
-            minwidth: 'var(--navbar-narrow-width)'
+            minwidth: 'var(--navbar-narrow-width)',
+            alignItems: 'center',
+
         });
     };
 
