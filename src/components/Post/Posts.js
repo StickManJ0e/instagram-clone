@@ -57,7 +57,7 @@ const Posts = (props) => {
         queryListener();
         const snapShotCount = await getCountFromServer(postRef);
         if ((snapShotCount.data().count - currentPosts.length) === 0) {
-            setEndLoad(<div>Reached End</div>);
+            setEndLoad(<div id="end-div">Reached End</div>);
         } else {
             const querySnapshot = await getDocs(query(postRef, orderBy('timestamp', 'desc'), startAfter(key), limit(2)));
             let newArray = currentPosts;
@@ -196,9 +196,11 @@ const Posts = (props) => {
                             <div className="post-div" key={post.docId} id={post.docId}>
                                 {/* Header */}
                                 <div className="post-header">
-                                    <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" onClick={() => navProfile(post.postUser)} />
-                                    <div>{post.postUser.username}</div>
-                                    <div>{getDate(post.docData.timestamp)}</div>
+                                    <div>
+                                        <img className="post-profile-picture" src={post.postUser.photoUrl} alt="profile" onClick={() => navProfile(post.postUser)} />
+                                        <div>{post.postUser.username}</div>
+                                        <div className="date-div"> • {getDate(post.docData.timestamp)}</div>
+                                    </div>
                                     <svg onClick={() => onMoreOptionsClick(post)} className="more-options-button" aria-label="More Options" color="var(--mode-text-color)" fill="var(--mode-text-color)" height={24} role="img" viewBox="0 0 24 24" width={24}>
                                         <circle cx={12} cy={12} r={1.5}></circle>
                                         <circle cx={6} cy={12} r={1.5}></circle>

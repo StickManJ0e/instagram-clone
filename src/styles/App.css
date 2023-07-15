@@ -7,6 +7,8 @@
     --mode-background-color-higlight: rgb(245, 245, 245);
     --mode-text-color: rgb(0, 0, 0);
     --mode-background-color-hover: rgba(0, 0, 0, 0.05);
+    --border-color: rgb(219, 219, 219);
+    --secondary-text: rgb(115, 115, 115);
 }
 
 html,

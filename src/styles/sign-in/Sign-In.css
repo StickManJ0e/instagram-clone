@@ -1,7 +1,7 @@
 .sign-in-div {
     width: fit-content;
     height: fit-content;
-    border: 1px solid rgb(219, 219, 219);
+    border: 1px solid var(--border-color);
     border-radius: 1px;
     display: flex;
     flex-direction: column;
@@ -38,7 +38,7 @@
     margin: 0 40px 6px;
     height: 38px;
     width: 268px;
-    border: 1px solid rgb(219, 219, 219);
+    border: 1px solid var(--border-color);
 }
 
 #submit {
@@ -64,7 +64,7 @@
 
 #google-sign-in {
     margin-bottom: 36px;
-    border: 1px solid rgb(219, 219, 219);
+    border: 1px solid var(--border-color);
     background-color: var(--mode-background-color);
     font-size: 15px;
     font-weight: 500;
@@ -88,7 +88,7 @@
 .or-border {
     height: 1px;
     top: 0.45em;
-    background-color: rgb(219, 219, 219);
+    background-color:var(--border-color);
     width: 100px;
 }
 
@@ -111,7 +111,7 @@ input::placeholder {
 }
 
 .redirect-div {
-    border: 1px solid rgb(219, 219, 219);
+    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: row;
     justify-content: center;

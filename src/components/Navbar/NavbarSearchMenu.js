@@ -5,7 +5,7 @@ import '../../styles/nav/NavbarSearchMenu.css';
 import { useNavigate } from "react-router-dom";
 
 const NavbarSearchMenu = (props) => {
-    const { setNavbarPopup, setNavbarStyling } = props;
+    const { setNavbarPopup, setNavbarStyling, setNavbarNarrow } = props;
     const [resultAccounts, setResultAccounts] = useState();
     const navigate = useNavigate();
 
@@ -21,6 +21,7 @@ const NavbarSearchMenu = (props) => {
         let searchButton = document.querySelector('#search-button');
         if (!(wrapper.contains(e.target)) && e.target !== searchButton) {
             setNavbarPopup();
+            setNavbarNarrow(false);
         };
     };
 

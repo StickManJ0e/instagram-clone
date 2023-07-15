@@ -20,9 +20,11 @@ a {
     width: var(--navbar-me);
 }
 
-#navbar-buttons-div>* {
+#navbar-buttons-div>*,
+#more-button {
     width: 100%;
     height: 48px;
+    padding-left: 5px;
 }
 
 #navbar-buttons-div>*:hover,
@@ -31,10 +33,12 @@ a {
 .logout-div:hover {
     cursor: pointer;
     background-color: var(--mode-background-color-hover);
+    border-radius: 5px;
 }
 
 #logo-div {
     height: 96px;
+    padding: 25px 12px 16px 0px;
 }
 
 #navbar-buttons-div {
@@ -47,17 +51,29 @@ a {
 #more-menu {
     background-color: var(--mode-background-color-higlight);
     width: 250px;
-    height: 200px;
+    height: fit-content;
     position: fixed;
-    transform: translate(0, -105%);
+    transform: translate(0, -125%);
     display: flex;
     flex-direction: column;
     border-radius: 12px;
     z-index: 4;
+    padding: 8px;
 }
 
-#notifications-button.not-read {
-    color: red;
+.notificatins-badge {
+    position: absolute;
+    right: -2px;
+    top: -1px;
+    border-radius: 50px;
+    height: 8px;
+    width: 8px;
+    background-color: rgb(255, 48, 6);
+    border: 1.5px solid rgb(255, 255, 255);
+}
+
+.notification-logo {
+    position: relative;
 }
 
 @media screen and (max-width: 850px) {
@@ -65,4 +81,73 @@ a {
         width: var(--navbar-narrow-width);
         min-width: var(--navbar-narrow-width);
     }
+
+    #navbar-buttons-div,
+    #logo-div,
+    #more-div {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+
+    #navbar-buttons-div>*,
+    #more-button,
+    #logo-div>svg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #logo-div>svg {
+        width: 100%;
+        padding: 10px;
+    }
+
+    #navbar-buttons-div>* {
+        padding: 10px;
+        width: fit-content;
+        height: fit-content;
+        box-sizing: border-box;
+    }
+}
+
+#navbar-buttons-div>div,
+#more-div>div {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+#more-div>div {
+    align-items: stretch;
+}
+
+#navbar>#logo-div {
+    height: fit-content;
+}
+
+#profile-picture {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.more-options > div,
+.logout-div {
+    height: 50px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+#more-menu-divider {
+    height: 6px;
+    background-color: rgba(219, 219, 219, .3);
+    margin: 0px -8px;
+}
+
+.more-options > div {
+    display: flex;
+    gap: 1rem;
 }

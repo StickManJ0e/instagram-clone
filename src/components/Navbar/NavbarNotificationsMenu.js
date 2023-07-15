@@ -3,7 +3,7 @@ import '../../styles/nav/NavbarNotificationsMenu.css';
 import Notifications from "../Notifications/Notifications";
 
 const NavbarNotificationsMenu = (props) => {
-    const { setNavbarPopup, setNavbarStyling, setRead } = props;
+    const { setNavbarPopup, setNavbarStyling, setRead, setNavbarNarrow } = props;
 
     const addNavbarStyling = () => {
         setNavbarStyling({
@@ -17,6 +17,7 @@ const NavbarNotificationsMenu = (props) => {
         let notificationsButton = document.querySelector('#notifications-button');
         if (!(wrapper.contains(e.target)) && e.target !== notificationsButton) {
             setNavbarPopup();
+            setNavbarNarrow(false);
             setRead(true);
         };
     }

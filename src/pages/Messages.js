@@ -17,7 +17,7 @@ const Messages = (props) => {
 
     return (
         <div id="messages-wrapper">
-            <Navbar setCurrentPopUp={setCurrentPopUp} setProfileUser={setProfileUser} styling={styling} />
+            <Navbar setCurrentPopUp={setCurrentPopUp} setProfileUser={setProfileUser} styling={styling} narrow={true} />
             <div id="messages-main">
                 <MessagesSidebar setCurrentPopUp={setCurrentPopUp} />
                 <MessagesArea setCurrentPopUp={setCurrentPopUp} id={id}/>
