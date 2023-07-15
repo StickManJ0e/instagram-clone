@@ -1,3 +1,5 @@
+Hosting link: https://instagram-clone-57e2b.web.app
+
 # Plan
 
 ## Features
