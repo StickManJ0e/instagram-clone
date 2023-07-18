@@ -21,14 +21,18 @@ const Posts = (props) => {
 
     //Set Current Posts on Doc Fetch for Start and Fetch Queries
     const setQueryData = async (newArray, document) => {
-        //Get User
-        const userRef = doc(firestore, 'users', document.data().uid);
-        const docSnap = await getDoc(query(userRef));
-        //Get Likes
-        const snapshot = await getCountFromServer(collection(firestore, 'posts', document.id, 'liked'));
-        newArray.push(postObject(document.id, document.data(), docSnap.data(), snapshot.data().count));
-        setKey(document.data().timestamp);
-        setCurrentPosts(filterArrayWithId(newArray));
+        try {
+            //Get User
+            const userRef = doc(firestore, 'users', document.data().uid);
+            const docSnap = await getDoc(query(userRef));
+            //Get Likes
+            const snapshot = await getCountFromServer(collection(firestore, 'posts', document.id, 'liked'));
+            newArray.push(postObject(document.id, document.data(), docSnap.data(), snapshot.data().count));
+            setKey(document.data().timestamp);
+            setCurrentPosts(filterArrayWithId(newArray));
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     //Filter a given array for unqiue posts based of docId
@@ -159,12 +163,16 @@ const Posts = (props) => {
         setCurrentPosts([]);
 
         document.addEventListener('scroll', handleScroll);
+        postFirst();
 
         return () => {
             document.removeEventListener('scroll', handleScroll);
-            postFirst();
         }
     }, []);
+
+    useEffect(() => {
+        console.log(currentPosts);
+    }, [currentPosts])
 
     const navProfile = (postUser) => {
         navigate(`/profile/${postUser.username}`);
