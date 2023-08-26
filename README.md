@@ -1,66 +1,53 @@
-Hosting link: https://instagram-clone-57e2b.web.app
+# Instagram Clone
+This fullstack projects aims to recreate a fully functional version of Instagram with posting, commenting and messaging functionality with even more using React and Firebase for the backend. 
 
-Note: Current hosting site may pop up with a security warning. It is safe to test the but don't use any actual passports or sensitive information since security for protecting your data is ameature and limited. 
+Live Demo: https://instagram-clone-57e2b.web.app
 
-# Plan
+Note: Current hosting site may pop up with a security warning. It is safe to test the but don't use any actual passwords or sensitive information since proper security and encryption is not implemented.  
+
+![Instagram feed](src/assets/reademe/feed.png)
+![Scroll through feed](<src/assets/reademe/scroll 2.20.27 pm.gif>)
+
+## Create Posts
+![Creating a post](<src/assets/reademe/create-post 2.20.27 pm.gif>)
+
+## Post Page
+![Post page](src/assets/reademe/post.png)
+
+## User Profiles
+![User Profiles](src/assets/reademe/profile.png)
+
+## Realtime Messaging
+![Realtime Messaging](src/assets/reademe/messaging.png)
+
+## Toggle Between Light and Dark Mode
+![Toggling bewteen light and dark themes](<src/assets/reademe/toggle 2.20.27 pm.gif>)
 
 ## Features
-
 ### Profile
-- [x] Login and authenticate (Google or manual)
-    - Add alert if email or username already in use
-- [x] Follow or unfollow people
-- [x] Show display name, username, # followers, # following, # posts, description, posts
-    - [x] Have edit profile button
-- [x] Can change username and password
+- Login and sign up with google or password.
+- Follow and unfollow users. 
 
-### Posts 
-- [x] Make Image post with text.
-    - Use `Firestore`
-- [x] Post Options
-    - [x] Unfollow Poster, go to post
-    - [x] Delete post, edit post, go to post
-- [x] Like posts.
-- [x] Comment on Posts.
-- Share Posts via messages.
-
-### Search
-- [x] Search for other users and update results realtime
-    - Use `Firestore`
+### Posts
+- Create or delete posts with an image, text and a cropping.
+- Like posts.
+- Comment on posts.
 
 ### Messaging
--[x]  Message other users realtime
-    - Use `Firestore`
+- Realise messaging with other users.
 
 ### Notifications
 - Get notifications if:
-    - [x] Posts liked, commented
-    - [x] Followed by other users
-        - Use `Firestore`
+    - Post is liked or commented on.
+    - User followed by another user. 
+
+### Search
+- Search for other users and update results realtime. 
 
 ### Settings
-- [x] Change username, password
-- [x] Change profile picture, bio and display name
+- Change username and profile.
+- Change profile picture, bio and display name.
 
-### Themes
-- Light and dark modes
-
-### Accessibility 
-- Built for mobile
-
-
-# Firestore Database Planning
-
-## Users
-### Users
-    - unique user
-        - UserInfo: Username, Display name, Profile Picture, User UID, email, profile description, created date;
-        - Messages
-            - Each conversation
-        - Posts
-        - Liked
-        - Following
-
-### Posts
-    - unique post
-        - PostInfo: User UID, image data, caption, aspect ratio, timestamp
+## Built With
+- React
+- Firebase
